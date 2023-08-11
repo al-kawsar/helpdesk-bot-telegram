@@ -1,0 +1,78 @@
+/* Navbar Component */
+
+nav>* {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+
+.navbar .navbar-brand img{
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    width: 50px;
+    font-size: 36px;
+    font-weight: 700;
+}
+
+.navbar .navbar-toggler {
+    border: none;
+    border-radius: 0;
+}
+
+.navbar .navbar-toggler:focus {
+    box-shadow: none;
+}
+
+.navbar ul li a {
+    font-weight: 400;
+    text-transform: capitalize;
+    color: #8c8c8c;
+}
+
+.navbar ul li a:hover {
+    color: black;
+}
+
+.navbar ul li a.active::after,
+.navbar ul li a::after {
+    content: "";
+    display: block;
+    left: 0;
+    bottom: 0;
+    width: 0%;
+    height: 3px;
+    background-color: #b2c251;
+    margin: 0 auto;
+    transition: all .2s ease;
+}
+
+.navbar ul li a.active::after {
+    width: 100%;
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+#btn-login::after {
+    display: none;
+}
+
+
+@media screen and (max-width: 768px) {
+    .navbar ul li a {
+        display: inline-block;
+    }
+
+    .navbar ul li a:hover::after {
+        width: 85px;
+    }
+
+}
+
+.margin-top {
+    margin: 0;
+    margin-top: 5rem;
+}
+
+/* Navbar End */
