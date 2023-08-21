@@ -14,7 +14,8 @@ class LoginController extends Controller
     public function login()
     {
         return view('v_login', [
-            'title' => "Login"
+            'title' => "Login",
+            'teks' => ""
         ]);
     }
 

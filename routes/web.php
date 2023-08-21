@@ -7,8 +7,7 @@ use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\SubKategoriController;
 use App\Http\Controllers\SubSubKategoriController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Admin;
-
+use App\Http\Controllers\TelegramBotController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -27,12 +26,14 @@ Route::get('/docs', function () {
 Route::get('/', function () {
     return view('v_home', [
         'title' => "Home",
+        'teks' => ""
     ]);
 });
 
 Route::get('/about', function () {
     return view('v_about', [
-        'title' => "About"
+        'title' => "About",
+        'teks' => ""
     ]);
 });
 
@@ -47,15 +48,30 @@ Route::prefix('admin')->group(function () {
     Route::get('sub-sub-kategori', [AdminBotController::class, 'subSubKategori']);
     Route::get('pertanyaan', [AdminBotController::class, 'pertanyaan']);
 
-    Route::get('tambah-kategori', [KategoriController::class, 'index']);
-    Route::post('tambah-kategori', [KategoriController::class, 'store']);
+    Route::post('kategori', [KategoriController::class, 'store']);
+    Route::post('edit-kategori/{kategori:kategori}', [KategoriController::class, 'update']);
+    Route::get('hapus-kategori/{kategori:id}', [KategoriController::class, 'delete'])->name('delete');
 
-    Route::get('tambah-sub-kategori', [SubKategoriController::class, 'index']);
-    Route::post('tambah-sub-kategori', [SubKategoriController::class, 'store']);
+    Route::post('sub-kategori', [SubKategoriController::class, 'store']);
+    Route::post('edit-sub-kategori/{subkategori:sub_kategori}', [SubKategoriController::class, 'update']);
+    Route::get('hapus-sub-kategori/{subkategori:id}', [SubKategoriController::class, 'delete']);
 
-    Route::get('tambah-sub-sub-kategori', [SubSubKategoriController::class, 'index']);
-    Route::post('tambah-sub-sub-kategori', [SubSubKategoriController::class, 'store']);
+    Route::post('sub-sub-kategori', [SubSubKategoriController::class, 'store']);
+    Route::post('edit-sub-sub-kategori/{subsubkategori:sub_sub_kategori}', [SubSubKategoriController::class, 'update']);
+    Route::get('hapus-sub-sub-kategori/{subsubkategori:id}', [SubSubKategoriController::class, 'delete']);
 
-    Route::get('tambah-pertanyaan', [PertanyaanController::class, 'index']);
-    Route::post('tambah-pertanyaan', [PertanyaanController::class, 'store']);
+    Route::post('pertanyaan', [PertanyaanController::class, 'store']);
+    Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
+    Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
+
+    Route::get('/info-webhook', [TelegramBotController::class, 'infoWebhook']);
+    Route::get('/bot', [TelegramBotController::class, 'getUpdates']);
+    Route::get('/info-bot', [TelegramBotController::class, 'getInfoBot']);
+    Route::get('/setWebhook', [TelegramBotController::class, 'setWebhook']);
+    Route::get('/deleteWebhook', [TelegramBotController::class, 'deleteWebhook']);
+    Route::post('/webhook', [TelegramBotController::class, 'webhook']);
 });
+
+// Route::get('/clear-success-message', function () {
+//     session()->forget('success_message');
+// });

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Kategori;
 use App\Models\Pertanyaan;
 use App\Models\SubKategori;
 use App\Models\SubSubKategori;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class AdminBotController extends Controller
 {
@@ -15,24 +16,38 @@ class AdminBotController extends Controller
      */
     public function dashboard()
     {
+        $kategoris = Kategori::count();
+        $sub_kategoris = SubKategori::count();
+        $sub_sub_kategoris = SubSubKategori::count();
+        $pertanyaans = Pertanyaan::count();
+
         return view('admin.va_dashboard', [
-            'title' => "Admin Dashboard"
+            'title' => "Admin Dashboard",
+            'teks' => "",
+            'kategoris' => number_format($kategoris, 0, ',', '.'),
+            'sub_kategoris' => number_format($sub_kategoris, 0, ',', '.'),
+            'sub_sub_kategoris' => number_format($sub_sub_kategoris, 0, ',', '.'),
+            'pertanyaans' => number_format($pertanyaans, 0, ',', '.')
         ]);
     }
 
     public function user()
     {
         return view('admin.va_users', [
-            'title' => "Admin User"
+            'title' => "Admin User",
+            'teks' => ""
         ]);
     }
 
     public function kategori()
     {
+
+        // PaginateKategoriJob::dispatch();
+
         return view('admin.kategori.va_kategori', [
             'title' => "Admin Kategori",
             'teks' => "Kategori",
-            'kategoris' => Kategori::with('subKategori')->latest()->paginate(8)
+            'kategoris' => Kategori::with('subKategori')->latest()->paginate(20)
         ]);
     }
 
@@ -41,7 +56,8 @@ class AdminBotController extends Controller
         return view('admin.sub-kategori.va_subkategori', [
             'title' => "Admin Sub Kategori",
             'teks' => "Sub-Kategori",
-            'subKategoris' => SubKategori::with('kategori')->latest()->paginate(8)
+            'kategori' => Kategori::paginate(50),
+            'sub_kategoris' => SubKategori::with('kategori')->latest()->paginate(10)
         ]);
     }
 
@@ -49,8 +65,9 @@ class AdminBotController extends Controller
     {
         return view('admin.sub-sub-kategori.va_subsubkategori', [
             'title' => "Admin Sub Sub Kategori",
-            'teks'=> "Sub-Sub-Kategori",
-            'subSubKategoris' => SubSubKategori::with('subKategori')->latest()->paginate(8)
+            'teks' => "Sub-Sub-Kategori",
+            'sub_kategori' => SubKategori::paginate(50),
+            'sub_sub_kategoris' => SubSubKategori::with(['subKategori'])->latest()->paginate(10)
         ]);
     }
 
@@ -59,6 +76,7 @@ class AdminBotController extends Controller
         return view('admin.pertanyaan.va_pertanyaan', [
             'title' => "Admin Pertanyaan",
             'teks' => "Pertanyaan",
+            'sub_sub_kategori' => SubSubKategori::paginate(50),
             'pertanyaans' => Pertanyaan::with('subSubKategori')->latest()->paginate(8)
         ]);
     }

@@ -10,6 +10,21 @@ html {
     -o-transition: all .2s ease;
 }
 
+/* Sidebar Start */
+
+[btn-settings] {
+    position: fixed;
+    top: 510px;
+    left: 2%;
+    z-index: 99;
+    gap: 2.5rem !important;
+    width: auto !important;
+}
+
+/* Sidebar End */
+
+
+
 /* Admin Kategori */
 
 .tambah-kategori {
@@ -20,6 +35,113 @@ html {
     height: 100%;
 }
 
-.w-sk{
+.w-sk {
     max-width: 300px;
+}
+
+
+
+/* Modal */
+
+.modal-backdrop {
+    z-index: 0;
+    background-color: transparent;
+    position: absolute;
+}
+
+.wrapper-col-input {
+    position: relative;
+}
+
+.wrapper-col-input .delete-input {
+    position: absolute;
+    top: 50%;
+    right: -16.5px;
+    border-radius: .25em;
+    padding: .5em;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 0px 1px #FF0000;
+    color: #FF0000;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transition: all .3s ease;
+    -webkit-transition: all .3s ease;
+    -moz-transition: all .3s ease;
+    -ms-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+}
+
+.wrapper-col-input .delete-input:hover {
+    border-radius: .25em;
+    -webkit-border-radius: .25em;
+    -moz-border-radius: .25em;
+    -ms-border-radius: .25em;
+    -o-border-radius: .25em;
+}
+
+.delete-link:hover {
+    color: red;
+}
+
+.swal-confirm-button {
+    transform: scale(1.5);
+
+}
+
+/* Tooltips */
+
+#liveAlertBtn::before {
+    content: "Tambahkan Kolom";
+    position: absolute;
+    top: -35px;
+    left: -40px;
+    transform: scale(.8);
+    display: block;
+    padding-block: .25rem;
+    font-size: 14px;
+    border-radius: .25rem;
+    background-color: #333;
+    width: 144px;
+    -webkit-transform: scale(.8);
+    -moz-transform: scale(.8);
+    -ms-transform: scale(.8);
+    -o-transform: scale(.8);
+    z-index: 1;
+}
+
+#liveAlertBtn::after {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -22px;
+    transform: rotate(45deg);
+    width: 15px;
+    height: 15px;
+    background-color: #333;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+}
+
+#liveAlertBtn::before,
+#liveAlertBtn::after {
+    display: none;
+}
+
+.fadeIn {
+    animation: fadeIn 0.5s ease forwards;
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
 }

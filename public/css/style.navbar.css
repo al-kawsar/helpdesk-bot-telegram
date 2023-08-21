@@ -9,8 +9,8 @@ nav>* {
     position: absolute;
     top: 8%;
     left: 5%;
-    width: 50px;
-    font-size: 36px;
+    width: 50px !important;
+    font-size: 36px !important;
     font-weight: 700;
 }
 

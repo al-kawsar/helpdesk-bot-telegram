@@ -9,7 +9,7 @@
 
                 {!! $title === 'Admin Dashboard'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Dashboard'
@@ -31,27 +31,27 @@
 
                 {!! $title === 'Admin User'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
-                {{--  --}}
-                <a class='{!! $title === 'Admin User'
+                <a class="{!! $title === 'Admin User'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}' href='/admin/user'>
-                    <span class='ml-4'>User</span>
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/user">
+                    <i class="bi bi-person fs-5"></i>
+                    <span class='ml-4'>Users</span>
                 </a>
             </li>
             <li class="relative px-6 py-3">
 
                 {!! $title === 'Admin Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                     : '' !!}
 
-                {{--  --}}
-                <a class='{!! $title === 'Admin Kategori'
+                <a class="{!! $title === 'Admin Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}' href='/admin/kategori'>
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/kategori">
+                    <i class="bi bi-box fs-5"></i>
                     <span class='ml-4'>Kategori</span>
                 </a>
             </li>
@@ -59,13 +59,13 @@
 
                 {!! $title === 'Admin Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                     : '' !!}
 
-                {{--  --}}
-                <a class='{!! $title === 'Admin Sub Kategori'
+                <a class="{!! $title === 'Admin Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}' href='/admin/sub-kategori'>
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-kategori">
+                    <i class="bi bi-box2 fs-5"></i>
                     <span class='ml-4'>Sub Kategori</span>
                 </a>
             </li>
@@ -73,13 +73,13 @@
 
                 {!! $title === 'Admin Sub Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                     : '' !!}
 
-                {{--  --}}
-                <a class='{!! $title === 'Admin Sub Sub Kategori'
+                <a class="{!! $title === 'Admin Sub Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}' href='/admin/sub-sub-kategori'>
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-sub-kategori">
+                    <i class="bi bi-boxes fs-5"></i>
                     <span class='ml-4'>Sub Sub Kategori</span>
                 </a>
             </li>
@@ -87,27 +87,41 @@
 
                 {!! $title === 'Admin Pertanyaan'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
-                {{--  --}}
-                <a class='{!! $title === 'Admin Pertanyaan'
+                <a class="{!! $title === 'Admin Pertanyaan'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}' href='/admin/pertanyaan'>
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/pertanyaan">
+                    <i class="bi bi-lightbulb fs-5"></i>
                     <span class='ml-4'>Pertanyaan</span>
                 </a>
             </li>
 
         </ul>
         {{-- <div class="px-6 my-6">
-            <button
-                class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-purple-600 border border-transparent rounded-lg active:bg-purple-600 hover:bg-purple-700 focus:outline-none focus:shadow-outline-purple">
-                Create account
-                <span class="ml-2" aria-hidden="true">+</span>
+            <button type="button" href="/admin/settings-bot"
+                class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-purple">
+                Settings Bot
+                <i class="bi bi-gear"></i>
             </button>
         </div> --}}
     </div>
 </aside>
+
+<div class="btn-group dropend ">
+    <button btn-settings type="button"
+        class="flex items-center justify-between w-full px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-500 focus:outline-none focus:shadow-outline-purple"
+        data-bs-toggle="dropdown" aria-expanded="false">
+        Settings Bot
+        <i class="bi bi-gear"></i>
+    </button>
+    <ul class="dropdown-menu border shadow-md">
+        <li class="py-2"><a class="dropdown-item px-5 py-2" href="/admin/setWebhook">Aktifkan Bot</a></li>
+        <li class="py-2"><a class="dropdown-item px-5 py-2" href="/admin/deleteWebhook">Matikan Bot</a></li>
+        <li class="py-2"><a class="dropdown-item px-5 py-2" href="#">Info Bot</a></li>
+    </ul>
+</div>
 
 {{-- Desktop Sidebar End --}}
 <div x-show="isSideMenuOpen" x-transition:enter="transition ease-in-out duration-150"

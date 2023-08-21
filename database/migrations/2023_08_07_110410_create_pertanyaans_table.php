@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('pertanyaan');
             $table->string('jawaban');
-            $table->foreignId('sub_sub_kategori_id');
+            $table->foreignId('sub_sub_kategori_id')->constrained('sub_sub_kategoris')->onDelete('cascade');
             $table->timestamps();
         });
     }

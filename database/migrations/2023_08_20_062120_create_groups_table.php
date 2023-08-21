@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sub_sub_kategoris', function (Blueprint $table) {
+        Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('sub_sub_kategori');
-            $table->foreignId('sub_kategori_id')->constrained('sub_kategoris')->onDelete('cascade');
+            $table->bigInteger('id_grup')->unique();
+            $table->string('nama_grup');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sub_sub_kategoris');
+        Schema::dropIfExists('groups');
     }
 };

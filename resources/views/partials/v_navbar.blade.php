@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md fixed-top bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/"><img src="icon/favicon.ico" alt=""></a>
+        <a class="navbar-brand" href="/"><img src="icon/favicon.ico" alt="" width="50"></a>
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
             aria-label="Toggle navigation">

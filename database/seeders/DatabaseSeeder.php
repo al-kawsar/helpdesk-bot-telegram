@@ -9,6 +9,7 @@ use App\Models\SubKategori;
 use App\Models\SubSubKategori;
 use App\Models\Pertanyaan;
 use App\Models\Admin;
+use Faker\Factory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,23 +19,16 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Kategori::create([
-            'kategori' => "Registrasi Ulang Camaba 2023"
-        ]);
-        SubKategori::create([
-            'sub_kategori' => "Bagaimana Cara Registrasi Ulang?",
-            'kategori_id' => 1
-        ]);
 
-        SubSubKategori::create([
-            'sub_sub_kategori' => "Sub Sub Kategori CAMABA REGISTRASI ULANG",
-            'sub_kategori_id' => 1
-        ]);
+        $totalRecords = 100;
+        $batchSize = 50; // Adjust the batch size as needed
 
-        Pertanyaan::create([
-            'pertanyaan' => "Apa Maksudnya Ini?",
-            'jawaban' => "Maksudnya Adalah Begini",
-            'sub_sub_kategori_id' => 1
-        ]);
+        $kategoriChunks = ceil($totalRecords / $batchSize);
+
+        for ($i = 0; $i < $kategoriChunks; $i++) {
+            // Kategori::factory($batchSize)->create();
+            Kategori::factory($batchSize)->create();
+        }
+
     }
 }

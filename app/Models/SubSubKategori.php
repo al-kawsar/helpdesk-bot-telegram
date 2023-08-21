@@ -15,7 +15,7 @@ class SubSubKategori extends Model
         return $this->belongsTo(SubKategori::class); // Tambahkan return
     }
 
-    public function pertanyaan()
+    public function Pertanyaan()
     {
         return $this->hasMany(Pertanyaan::class);
     }

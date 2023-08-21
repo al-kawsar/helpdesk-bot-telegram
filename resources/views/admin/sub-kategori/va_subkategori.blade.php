@@ -1,14 +1,77 @@
 @extends('admin.layouts.va_main')
 
 @section('content')
-    <main class="h-full pb-16 overflow-y-auto">
+    <main class="h-full pb-16 overflow-y-auto" style="z-index: 10">
         <div class="container grid px-6 mx-auto">
             <h2 class="my-6 text-2xl font-semibold text-gray-700 dark:text-gray-200">
                 Table {{ $teks }}
             </h2>
 
-            <a href="/admin/tambah-sub-kategori" class="btn btn-primary my-2 tambah-kategori ms-auto">Tambah
-                {{ $teks }}</a>
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <button class="btn btn-primary my-2 tambah-kategori ms-auto" type="button" data-bs-toggle="modal"
+                data-bs-target="#modalKategori">Tambah
+                {{ $teks }}</button>
+
+            <!-- Modal Tambah Kategori-->
+            <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="/admin/sub-kategori" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
+                                    id="exampleModalLabel">Modal
+                                    Tambah {{ $teks }} </h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="px-4 py-3 dark:bg-gray-800 height">
+                                    @error('tambah_sub-kategori')
+                                        <div class="alert alert-sm alert-danger">
+                                            {{ $message }}</div>
+                                    @enderror
+                                    @csrf
+                                    <label class="block text-sm">
+                                        <span class="text-gray-700 dark:text-gray-400">Nama Sub Kategori <span
+                                                class="text-danger">*</span></span>
+                                        <input
+                                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                            name="tambah_sub-kategori" required />
+                                    </label>
+                                    {{-- Display placeholder for alerts --}}
+                                    <div id="tambahKolomKategori"></div>
+
+                                    <button type="button" class="btn btn-secondary my-3" id="liveAlertBtn">Tambah
+                                        Kolom</button>
+
+                                    <label class="block text-sm my-3">
+                                        <span class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih Kategori <span
+                                                class="text-danger">*</span></span>
+                                        <select name="option"
+                                            class="block p-2 rounded border mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
+                                            @foreach ($kategori as $item)
+                                                <option value="{{ $item->id }}">{{ $item->kategori }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                <button type="submit" class="btn btn-success">Tambah
+                                    {{ $teks }}</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
             <div class="w-full overflow-hidden rounded-lg shadow-xs">
                 <div class="w-full overflow-x-auto">
                     <table class="w-full whitespace-no-wrap">
@@ -22,22 +85,23 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @foreach ($subKategoris as $number => $subKategori)
+                            @foreach ($sub_kategoris as $number => $sub_kategori)
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
-                                        {{ $number + $subKategoris->firstItem() }}
+                                        {{ $number + $sub_kategoris->firstItem() }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $subKategori->sub_kategori }}
+                                        {{ $sub_kategori->sub_kategori }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $subKategori->kategori->kategori }}
+                                        {{ $sub_kategori->kategori->kategori }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
-                                            <button
-                                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-green-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                                aria-label="Edit">
+
+                                            <button type="button"
+                                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-green-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-green"
+                                                data-bs-toggle="modal" data-bs-target="#modalEdit{{ $sub_kategori->id }}">
                                                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                     viewBox="0 0 20 20">
                                                     <path
@@ -45,16 +109,84 @@
                                                     </path>
                                                 </svg>
                                             </button>
-                                            <button
-                                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-red-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-gray"
-                                                aria-label="Delete">
+
+                                            <!-- ================== Modal Edit Sub Kategori ================== -->
+                                            <div class="modal fade" id="modalEdit{{ $sub_kategori->id }}" tabindex="-1"
+                                                aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <form
+                                                        action="/admin/edit-sub-kategori/{{ $sub_kategori->sub_kategori }}"
+                                                        method="post">
+                                                        @csrf
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
+                                                                    id="exampleModalLabel">Edit {{ $teks }}</h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                {{-- Display validation errors if there are any --}}
+                                                                @error('update_sub_kategori')
+                                                                    <div class="alert alert-sm alert-danger">
+                                                                        {{ $message }}</div>
+                                                                @enderror
+                                                                <label class="block text-sm">
+                                                                    <span class="text-gray-700 dark:text-gray-400">Nama
+                                                                        {{ $teks }} <span
+                                                                            class="text-danger">*</span></span>
+                                                                    <input
+                                                                        class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                                        name="update_sub_kategori"
+                                                                        value="{{ $sub_kategori->sub_kategori }}" required>
+                                                                </label>
+
+                                                                <label class="block text-sm my-3">
+                                                                    <span
+                                                                        class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih
+                                                                        Kategori <span class="text-danger">*</span></span>
+                                                                    <select name="option"
+                                                                        class="block p-2 rounded mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray border">
+                                                                        @foreach ($kategori as $item)
+                                                                            @if ($item->kategori === $sub_kategori->kategori->kategori)
+                                                                                <option
+                                                                                    value="{{ $sub_kategori->kategori->id }}"
+                                                                                    selected>
+                                                                                    {{ $sub_kategori->kategori->kategori }}
+                                                                                </option>
+                                                                            @else
+                                                                                <option value="{{ $item->id }}">
+                                                                                    {{ $item->kategori }}</option>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </select>
+
+                                                                </label>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-bs-dismiss="modal">Batal</button>
+                                                                <button type="submit" class="btn btn-primary">Simpan
+                                                                    Perubahan</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+
+
+
+                                            <a href="/admin/hapus-sub-kategori/{{ $sub_kategori->id }}"
+                                                class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-red-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-red delete-link"
+                                                data-kategori="{{ $sub_kategori->sub_kategori }}" aria-label="Delete">
                                                 <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                     viewBox="0 0 20 20">
                                                     <path fill-rule="evenodd"
                                                         d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
                                                         clip-rule="evenodd"></path>
                                                 </svg>
-                                            </button>
+                                            </a>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -66,7 +198,7 @@
                 {{-- Pagination --}}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        {{ $subKategoris }}
+                        {{ $sub_kategoris }}
                     </ul>
                 </nav>
             </div>
