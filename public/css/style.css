@@ -94,7 +94,7 @@ html {
 
 }
 
-/* Tooltips */
+/* Add Field Component */
 
 #liveAlertBtn::before {
     content: "Tambahkan Kolom";
@@ -139,6 +139,11 @@ html {
     animation: fadeIn 0.5s ease forwards;
     opacity: 0;
 }
+
+.fs-sm {
+    font-size: 14px;
+}
+
 
 @keyframes fadeIn {
     to {

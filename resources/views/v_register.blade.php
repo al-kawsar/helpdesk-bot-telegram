@@ -38,9 +38,8 @@
                     </button>
 
                     <hr class="my-8" />
-                    <p class="mt-1 text-sm">Already have an account?<a
-                            class="font-medium text-primary text-blue-400 hover:underline" href="/login">login
-                            here</a></p>
+                    <p class="mt-1 text-sm">sudah punya akun?<a
+                            class="font-medium text-primary text-blue-400 hover:underline" href="/login">Login disini</a></p>
                 </div>
             </form>
         </div>

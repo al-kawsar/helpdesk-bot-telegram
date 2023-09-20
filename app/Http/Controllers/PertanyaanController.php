@@ -29,6 +29,8 @@ class PertanyaanController extends Controller
             'tambah_jawaban.required' => "Jawaban Wajib Di Isi!!"
         ]);
 
+        // dd($validated);
+
         Pertanyaan::create([
             'pertanyaan' => $validated['tambah_pertanyaan'],
             'jawaban' => $validated['tambah_jawaban'],
@@ -37,7 +39,6 @@ class PertanyaanController extends Controller
 
 
         // Jika semua validasi berhasil, lanjutkan untuk menyimpan data
-
 
         session()->flash('success_message', "Pertanyaan Berhasil Ditambahkan!!");
         session()->flash('title', "Berhasil Ditambahkan!");

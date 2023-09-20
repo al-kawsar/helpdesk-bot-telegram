@@ -18,8 +18,8 @@
                 </li>
                 <li class="nav-item">
                     <a id="btn-login"
-                        class="nav-link btn btn-primary text-light px-3 ms-3 {{ $title === 'About' ? 'active' : '' }}"
-                        aria-current="page" href="/login" target="_blank">Login</a>
+                        class="nav-link btn btn-primary text-light px-3 ms-3"
+                        aria-current="page" href="/login">Login</a>
                 </li>
             </ul>
         </div>

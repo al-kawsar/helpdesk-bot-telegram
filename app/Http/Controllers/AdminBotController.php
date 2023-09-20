@@ -3,27 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Group;
 use App\Models\Kategori;
 use App\Models\Pertanyaan;
 use App\Models\SubKategori;
 use App\Models\SubSubKategori;
+use App\Models\TelegramUser;
+use App\Models\User;
 use Illuminate\Support\Facades\Cache;
 
 class AdminBotController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function dashboard()
     {
+
         $kategoris = Kategori::count();
         $sub_kategoris = SubKategori::count();
         $sub_sub_kategoris = SubSubKategori::count();
         $pertanyaans = Pertanyaan::count();
+        $users = TelegramUser::count();
 
         return view('admin.va_dashboard', [
             'title' => "Admin Dashboard",
             'teks' => "",
+            'users' => number_format($users, 0, ',', '.'),
             'kategoris' => number_format($kategoris, 0, ',', '.'),
             'sub_kategoris' => number_format($sub_kategoris, 0, ',', '.'),
             'sub_sub_kategoris' => number_format($sub_sub_kategoris, 0, ',', '.'),
@@ -35,7 +38,23 @@ class AdminBotController extends Controller
     {
         return view('admin.va_users', [
             'title' => "Admin User",
-            'teks' => ""
+            'teks' => "Users",
+            'users' => TelegramUser::paginate(20)
+        ]);
+    }
+
+    public function grup(){
+        return view('admin.va_grup',[
+            'title' => "Admin Grup",
+            'teks' => "Grup",
+            'grups' => Group::paginate(20)
+        ]);
+    }
+
+    public function inbox(){
+        return view('admin.va_inbox',[
+            'title' => "Admin Inbox",
+            'teks' => "Inbox",
         ]);
     }
 

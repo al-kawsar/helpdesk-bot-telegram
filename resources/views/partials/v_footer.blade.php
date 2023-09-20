@@ -3,7 +3,7 @@
 </script>
 
 <script>
-    //  ============ Tambah Kolom Action ============
+    //  ============ Tambah Kolom Action Start ============
 
     const alertPlaceholder = document.getElementById('tambahKolomKategori');
 
@@ -42,7 +42,7 @@
 
     }
 
-    //  ============ Tambah Kolom Action ============
+    //  ============ Tambah Kolom Action End ============
 
     //  ============ Notifikasi / Sweet Alert ============
 
@@ -137,7 +137,7 @@
             text: failedMessage,
             icon: 'error',
             confirmButtonText: "OK",
-            confirmButtonColor: 'green',
+            confirmButtonColor: '#FF0000',
             showConfirmButton: true
         });
     }

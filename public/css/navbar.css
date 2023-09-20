@@ -5,9 +5,9 @@ nav>* {
     font-weight: 400;
 }
 
-.navbar .navbar-brand img{
+.navbar .navbar-brand img {
     position: absolute;
-    top: 8%;
+    top: 5px;
     left: 5%;
     width: 50px !important;
     font-size: 36px !important;
@@ -41,7 +41,7 @@ nav>* {
     bottom: 0;
     width: 0%;
     height: 3px;
-    background-color: #b2c251;
+    background-color: #0d6efd;
     margin: 0 auto;
     transition: all .2s ease;
 }
@@ -60,12 +60,20 @@ nav>* {
 
 
 @media screen and (max-width: 768px) {
+    .navbar ul li:first-of-type {
+        margin-top: 1rem;
+    }
+
     .navbar ul li a {
         display: inline-block;
     }
 
     .navbar ul li a:hover::after {
         width: 85px;
+    }
+
+    #btn-login {
+        margin: 0 !important;
     }
 
 }

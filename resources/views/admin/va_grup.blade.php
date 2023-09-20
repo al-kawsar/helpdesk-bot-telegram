@@ -21,29 +21,25 @@
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">#</th>
-                                <th class="px-4 py-3">First Name</th>
-                                <th class="px-4 py-3">Last Name</th>
-                                <th class="px-4 py-3">Username</th>
-                                <th class="px-4 py-3">Tanggal Ditambahkan</th>
+                                <th class="px-4 py-3">Nama Grup</th>
+                                <th class="px-4 py-3">Tipe Grup</th>
+                                <th class="px-4 py-3">Created_at</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @foreach ($users as $number => $user)
+                            @foreach ($grups as $number => $grup)
                                 <tr class="text-gray-700 dark:text-gray-400">
                                     <td class="px-4 py-3">
-                                        {{ $number + $users->firstItem() }}
+                                        {{ $number + $grups->firstItem() }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $user->first_name }}
+                                        {{ $grup->nama_grup }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $user->last_name }}
+                                        {{ $grup->tipe_grup }}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-primary">
-                                        {{ '@' . $user->username }}
-                                    </td>
-                                    <td class="px-4 py-3 text-sm">
-                                        {{  $user->created_at->format('d M Y') }}
+                                        {{ $grup->created_at->diffForHumans() }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -54,7 +50,7 @@
                 {{-- Pagination --}}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        {{ $users }}
+                        {{ $grups }}
                     </ul>
                 </nav>
             </div>

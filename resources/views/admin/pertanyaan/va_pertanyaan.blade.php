@@ -44,6 +44,7 @@
                                         <span class="text-gray-700 dark:text-gray-400">Pertanyaan <span
                                                 class="text-danger">*</span></span>
                                         <input
+                                            {{ isset($sub_sub_kategori[0]) && !empty($sub_sub_kategori[0]) ? '' : 'disabled readonly ?>' }}
                                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                             name="tambah_pertanyaan" required />
                                     </label>
@@ -51,20 +52,30 @@
                                         <span class="text-gray-700 dark:text-gray-400">Jawaban <span
                                                 class="text-danger">*</span></span>
                                         <input
+                                            {{ isset($sub_sub_kategori[0]) && !empty($sub_sub_kategori[0]) ? '' : 'disabled readonly ?>' }}
                                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
                                             name="tambah_jawaban" required />
                                     </label>
 
-                                    <label class="block text-sm my-3">
-                                        <span class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih Kategori <span
-                                                class="text-danger">*</span></span>
-                                        <select name="option"
-                                            class="block p-2 rounded mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
-                                            @foreach ($sub_sub_kategori as $item)
-                                                <option value="{{ $item->id }}">{{ $item->sub_sub_kategori }}</option>
-                                            @endforeach
-                                        </select>
                                     </label>
+                                    @if (isset($sub_sub_kategori[0]) && !empty($sub_sub_kategori[0]))
+                                        <label class="block text-sm my-3">
+                                            <span class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih Sub Sub
+                                                Kategori
+                                                <span class="text-danger">*</span>
+                                            </span>
+                                            <select name="option"
+                                                @foreach ($sub_sub_kategori as $item)
+                                                class="block p-2 rounded mt-1 border text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
+                                                <option value="{{ $item->id }}">{{ $item->sub_sub_kategori }}</option> @endforeach
+                                                </select>
+                                        </label>
+                                    @else
+                                        <a href="/admin/sub-sub-kategori"
+                                            class="d-block text-sm underline text-danger">Silahkan
+                                            Isi
+                                            Sub Sub-Kategori Terlebih Dahulu</a>
+                                    @endif
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -87,9 +98,11 @@
                                 <th class="px-4 py-3">#</th>
                                 <th class="px-4 py-3">Pertanyaan</th>
                                 <th class="px-4 py-3">Jawaban</th>
+                                <th class="px-4 py-3">Tanggal Ditambahkan</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
+                        @php $limit = 35; @endphp
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             @foreach ($pertanyaans as $number => $pertanyaan)
                                 <tr class="text-gray-700 dark:text-gray-400">
@@ -97,10 +110,13 @@
                                         {{ $number + $pertanyaans->firstItem() }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $pertanyaan->pertanyaan }}
+                                        {{ Str::limit($pertanyaan->pertanyaan, $limit, '...') }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $pertanyaan->jawaban }}
+                                        {{ Str::limit($pertanyaan->jawaban, $limit, '...') }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $pertanyaan->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">

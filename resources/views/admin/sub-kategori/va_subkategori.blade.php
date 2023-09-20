@@ -81,6 +81,7 @@
                                 <th class="px-4 py-3">#</th>
                                 <th class="px-4 py-3">Sub-Kategori</th>
                                 <th class="px-4 py-3">Kategori</th>
+                                <th class="px-4 py-3">Tanggal ditambahkan</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
@@ -95,6 +96,9 @@
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ $sub_kategori->kategori->kategori }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $sub_kategori->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">

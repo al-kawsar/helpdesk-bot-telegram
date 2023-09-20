@@ -17,7 +17,7 @@
                     </div>
                     <div>
                         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
-                            Total Users
+                            Total User
                         </p>
                         <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
                             {{ $users ?? '' }}
@@ -58,7 +58,7 @@
                     <div
                         class="p-3 mr-4 text-orange-500 bg-blue-100 border rounded-full dark:text-orange-100 dark:bg-orange-500">
                         {{-- Icon --}}
-                        <img src="/icon/tag1.png" alt="Sub Sub Icon" class="p-2">
+                        <img src="/icon/tag1.png" alt="Sub Sub Icon" class="p-2" width="100">
                     </div>
                     <div>
                         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
@@ -73,7 +73,7 @@
                     <div
                         class="p-3 mr-4 text-orange-500 bg-blue-100 border rounded-full dark:text-orange-100 dark:bg-orange-500">
                         {{-- Icon --}}
-                        <img src="/icon/question.png" alt="Pertanyaan Icon" class="p-2">
+                        <img src="/icon/question.png" alt="Pertanyaan Icon" class="p-2" width="100">
                     </div>
                     <div>
                         <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">

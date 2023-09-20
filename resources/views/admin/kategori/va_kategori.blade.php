@@ -75,6 +75,7 @@
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
                                 <th class="px-4 py-3">#</th>
                                 <th class="px-4 py-3">Kategori</th>
+                                <th class="px-4 py-3">Tanggal Ditambahkan</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
@@ -86,6 +87,9 @@
                                     </td>
                                     <td class="px-4 py-3 text-sm">
                                         {{ $kategori->kategori }}
+                                    </td>
+                                    <td class="px-4 py-3 text-sm">
+                                        {{ $kategori->created_at->format('d M Y') }}
                                     </td>
                                     <td class="px-4 py-3">
                                         <div class="flex items-center space-x-4 text-sm">
@@ -117,7 +121,7 @@
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                {{-- Display validation errors if there are any --}}
+                                                                  {{-- Display validation errors if there are any --}}
                                                                 @error('update-kategori')
                                                                     <div class="alert alert-sm alert-danger">
                                                                         <p>{{ $message }}</p>

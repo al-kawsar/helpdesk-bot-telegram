@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminBotController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PertanyaanController;
@@ -19,30 +20,19 @@ use App\Http\Controllers\TelegramBotController;
 |
 */
 
-Route::get('/docs', function () {
-    return view('welcome');
-});
+Route::get('/', [DashboardController::class, 'pageIndex']);
 
-Route::get('/', function () {
-    return view('v_home', [
-        'title' => "Home",
-        'teks' => ""
-    ]);
-});
+Route::get('/about', [DashboardController::class, 'pageAbout']);
 
-Route::get('/about', function () {
-    return view('v_about', [
-        'title' => "About",
-        'teks' => ""
-    ]);
-});
+// Route::get('/register', [LoginController::class, 'register'])->name('auth.register');
+Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('isAdminLogin');
+Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
+Route::get('/admin/logout', [LoginController::class, 'logout'])->name('auth.logout');
 
-Route::get('/login', [LoginController::class, 'login'])->name('login');
-Route::post('/login', [LoginController::class, 'authenticate']);
-
-Route::prefix('admin')->group(function () {
-    Route::get('dashboard', [AdminBotController::class, 'dashboard']);
-    Route::get('user', [AdminBotController::class, 'user']);
+Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::get('dashboard', [AdminBotController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('users', [AdminBotController::class, 'user']);
+    Route::get('grup', [AdminBotController::class, 'grup']);
     Route::get('kategori', [AdminBotController::class, 'kategori']);
     Route::get('sub-kategori', [AdminBotController::class, 'subKategori']);
     Route::get('sub-sub-kategori', [AdminBotController::class, 'subSubKategori']);
@@ -63,14 +53,11 @@ Route::prefix('admin')->group(function () {
     Route::post('pertanyaan', [PertanyaanController::class, 'store']);
     Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
     Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
-
-    Route::get('/info-webhook', [TelegramBotController::class, 'infoWebhook']);
-    Route::get('/bot', [TelegramBotController::class, 'getUpdates']);
-    Route::get('/info-bot', [TelegramBotController::class, 'getInfoBot']);
-    Route::get('/setWebhook', [TelegramBotController::class, 'setWebhook']);
-    Route::get('/deleteWebhook', [TelegramBotController::class, 'deleteWebhook']);
-    Route::post('/webhook', [TelegramBotController::class, 'webhook']);
 });
+
+// Route::get('/admin/setBot', [TelegramBotController::class, 'setWebhook']);
+// Route::get('/admin/turnBot', [TelegramBotController::class, 'deleteWebhook']);
+// Route::post('/admin/webhook', [TelegramBotController::class, 'webhook']);
 
 // Route::get('/clear-success-message', function () {
 //     session()->forget('success_message');
