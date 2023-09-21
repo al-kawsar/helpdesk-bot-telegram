@@ -16,11 +16,12 @@
                     <a class="nav-link {{ $title === 'About' ? 'active' : '' }}" aria-current="page"
                         href="/about">About</a>
                 </li>
-                <li class="nav-item">
-                    <a id="btn-login"
-                        class="nav-link btn btn-primary text-light px-3 ms-3"
-                        aria-current="page" href="/login">Login</a>
-                </li>
+                @if (!auth()->check())
+                    <li class="nav-item">
+                        <a id="btn-login" class="nav-link btn btn-primary text-light px-3 ms-3" aria-current="page"
+                            href="/login">Login</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

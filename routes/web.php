@@ -22,8 +22,6 @@ use App\Http\Controllers\TelegramBotController;
 
 Route::get('/', [DashboardController::class, 'pageIndex']);
 
-Route::get('/about', [DashboardController::class, 'pageAbout']);
-
 // Route::get('/register', [LoginController::class, 'register'])->name('auth.register');
 Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('isAdminLogin');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
@@ -54,10 +52,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
     Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
 });
+Route::post('/admin/webhook', [TelegramBotController::class, 'handleBot']);
 
 // Route::get('/admin/setBot', [TelegramBotController::class, 'setWebhook']);
 // Route::get('/admin/turnBot', [TelegramBotController::class, 'deleteWebhook']);
-// Route::post('/admin/webhook', [TelegramBotController::class, 'webhook']);
 
 // Route::get('/clear-success-message', function () {
 //     session()->forget('success_message');

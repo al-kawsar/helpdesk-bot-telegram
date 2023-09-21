@@ -14,6 +14,25 @@ use App\Models\TelegramUser;
 class TelegramBotController extends Controller
 {
 
+    private function Telegram(string $method, $parameters)
+    {
+        $token = $_ENV['TELEGRAM_BOT_TOKEN'];
+        $url = "https://api.telegram.org/bot{$token}/$method";
+
+        $options = array(
+            'http' => [
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
+                'content' => http_build_query($parameters),
+            ],
+        );
+
+        $context = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+
+        return $result;
+    }
+
     public function generateInlineKeyboard($items, $callbackKey, $type, $buttonsPerRow = 3)
     {
         $keyboard = ['inline_keyboard' => []];
@@ -39,47 +58,9 @@ class TelegramBotController extends Controller
         return $keyboard;
     }
 
-    public function getUpdates()
+    public function handleBot(Request $request)
     {
-        $response = Telegram::getUpdates();
-
-        if (!empty($response)) {
-            $latestUpdate = end($response);
-            return response()->json($latestUpdate);
-        } else {
-            return response()->json(['message' => 'No updates available']);
-        }
-    }
-
-    public function setWebhook(Request $request)
-    {
-        $response = Telegram::setWebhook([
-            // 'url' => "https://helpdesk.ict.unm.ac.id/admin/webhook"
-            'url' => "https://40ae-140-213-227-119.ngrok-free.app/admin/webhook"
-        ]);
-
-        if ($response === true) {
-            session()->flash('success_message', "Bot Berhasil Dinyalakan");
-            session()->flash('title', "Berhasil!!");
-            return redirect()->back();
-        }
-        return redirect()->back()->with('failed_message', "Gagal Mengaktifkan Bot!");
-    }
-
-    public function deleteWebhook()
-    {
-        $response = Telegram::removeWebhook();
-        if ($response == 1 || $response == true) {
-            session()->flash('success_message', "Bot Berhasil Dimatikan");
-            session()->flash('title', "Berhasil!!");
-
-            return redirect()->back();
-        }
-    }
-
-    public function webhook(Request $request)
-    {
-        $update = Telegram::getWebhookUpdate();
+        $update = Telegram::getUpdates();
 
         // Cek Bot Jika Dimasukkan Di Grup Baru
         if (isset($update['new_chat_member']['status']) && $update['new_chat_member']['status'] === "administrator") {
@@ -130,9 +111,9 @@ class TelegramBotController extends Controller
             if ($message === "/start" || $message === "/start@helpdesk_camaba_bot") {
                 $message = "from : @$username\n";
                 $message .= "Halo saya adalah bot Helpdesk ketik atau klik -> [/help] untuk melihat detail informasi";
-                Telegram::sendMessage([
+                self::Telegram('sendMessage', [
                     'chat_id' => $chat_id,
-                    'text' => $message,
+                    'text' => $message
                 ]);
             }
             if ($message === "/help" || $message === "/help@helpdesk_camaba_bot") {
@@ -146,7 +127,7 @@ class TelegramBotController extends Controller
                 } else {
                     $message = "Maaf, Kategori Masih Kosong Atau Belum Ditambahkan ";
                 }
-                Telegram::sendMessage([
+                self::Telegram('sendMessage', [
                     'chat_id' => $chat_id,
                     'text' => $message,
                     'reply_markup' => json_encode($keyboard)
@@ -173,7 +154,7 @@ class TelegramBotController extends Controller
                 } else {
                     $message = "Maaf, Sub Kategori $Kategori->kategori Belum Tersedia";
                 }
-                Telegram::sendMessage([
+                self::Telegram('sendMessage', [
                     'chat_id' => $chat_id,
                     'text' => $message,
                     'reply_markup' => json_encode($keyboard)
@@ -190,7 +171,7 @@ class TelegramBotController extends Controller
                     $message = "Maaf, Sub Sub Kategori {$subKategori->sub_kategori} Belum Tersedia";
                 }
 
-                Telegram::sendMessage([
+                self::Telegram('sendMessage', [
                     'chat_id' => $chat_id,
                     'text' => $message,
                     'reply_markup' => json_encode($keyboard)
@@ -206,7 +187,7 @@ class TelegramBotController extends Controller
                 } else {
                     $message = "Maaf, Pertanyaan {$subSubKategori->sub_sub_kategori} Belum Tersedia ";
                 }
-                Telegram::sendMessage([
+                self::Telegram('sendMessage', [
                     'chat_id' => $chat_id,
                     'text' => $message,
                     'reply_markup' => json_encode($keyboard)
@@ -217,9 +198,10 @@ class TelegramBotController extends Controller
                     $message = "-> Jawaban\n\n";
                     $message .= $pertanyaan;
 
-                    Telegram::sendMessage([
+                    self::Telegram('sendMessage', [
                         'chat_id' => $chat_id,
-                        'text' => $message
+                        'text' => $message,
+                        'reply_markup' => json_encode($keyboard)
                     ]);
                 }
             }
