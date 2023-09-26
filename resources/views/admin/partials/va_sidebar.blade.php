@@ -2,7 +2,7 @@
 <aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 border">
     <div class="py-4 text-gray-500 dark:text-gray-400">
         <a class="d-flex justify-content-center" href="/admin/dashboard">
-            <img src="{{ asset('icon/') }}/favicon.ico" class="d-block" alt="" width="70">
+            <img src="{{ asset('img') }}/logounm.png" class="" alt="" width="80">
         </a>
         <ul class="mt-6">
             <li class="relative px-6 py-3">

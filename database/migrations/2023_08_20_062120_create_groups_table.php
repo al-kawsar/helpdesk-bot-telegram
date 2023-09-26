@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('id_grup',50)->unique();
             $table->string('nama_grup');
+            $table->string('username')->nullable(true);
             $table->string('tipe_grup');
             $table->timestamps();
         });

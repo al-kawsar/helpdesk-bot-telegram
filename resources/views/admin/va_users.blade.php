@@ -37,13 +37,13 @@
                                         {{ $user->first_name }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{ $user->last_name }}
+                                        {!! $user->last_name ?? "<span class='badge bg-secondary text-uppercase p-2 w-full'>null</span>" !!}
                                     </td>
                                     <td class="px-4 py-3 text-sm text-primary">
                                         {{ '@' . $user->username }}
                                     </td>
                                     <td class="px-4 py-3 text-sm">
-                                        {{  $user->created_at->format('d M Y') }}
+                                        {{  $user->created_at->format('d M Y | H:i:s') }}
                                     </td>
                                 </tr>
                             @endforeach

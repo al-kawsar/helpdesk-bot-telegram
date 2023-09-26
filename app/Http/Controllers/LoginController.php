@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
@@ -24,18 +26,20 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ], [
-            'email.required' => 'email wajib di isi!',
-            'email.email' => 'silahkan masukkan email valid!',
-            'password.required' => 'password tidak valid'
+            'email.required' => 'Email wajib diisi!',
+            'email.email' => 'Silakan masukkan email yang valid!',
+            'password.required' => 'Password wajib diisi!',
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (auth()->attempt($credentials)) {
             $request->session()->regenerate();
-
             return redirect()->intended('/admin/dashboard');
         }
-        return redirect()->back()->with('failed_message', 'username dan password salah!');
+
+        return redirect()->back()->with('failed_message', 'Username dan password salah!');
     }
+
+
 
     public function logout()
     {

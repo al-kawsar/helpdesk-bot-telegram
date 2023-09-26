@@ -1,0 +1,37 @@
+public function getUpdates()
+    {
+        $response = Telegram::getUpdates();
+
+        if (!empty($response)) {
+            $latestUpdate = end($response);
+            return response()->json($latestUpdate);
+        } else {
+            return response()->json(['message' => 'No updates available']);
+        }
+    }
+
+    public function setWebhook(Request $request)
+    {
+        $response = Telegram::setWebhook([
+            'url' => "https://helpdesk.ict.unm.ac.id/admin/webhook"
+            // 'url' => "https://40ae-140-213-227-119.ngrok-free.app/admin/webhook"
+        ]);
+
+        if ($response === true) {
+            session()->flash('success_message', "Bot Berhasil Dinyalakan");
+            session()->flash('title', "Berhasil!!");
+            return redirect()->back();
+        }
+        return redirect()->back()->with('failed_message', "Gagal Mengaktifkan Bot!");
+    }
+
+    public function deleteWebhook()
+    {
+        $response = Telegram::removeWebhook();
+        if ($response == 1 || $response == true) {
+            session()->flash('success_message', "Bot Berhasil Dimatikan");
+            session()->flash('title', "Berhasil!!");
+
+            return redirect()->back();
+        }
+    }

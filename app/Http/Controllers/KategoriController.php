@@ -10,12 +10,14 @@ use App\Jobs\InsertData;
 
 class KategoriController extends Controller
 {
+
+
     public function store(Request $request)
     {
+
         $kategoriData = $request->except('_token');
 
         $kategoriData = array_reverse($kategoriData);
-
         foreach ($kategoriData as $key => $kategori) {
             $validator = Validator::make(
                 ['add-kategori' => $kategori],

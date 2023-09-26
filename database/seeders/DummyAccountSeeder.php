@@ -15,7 +15,7 @@ class DummyAccountSeeder extends Seeder
         User::create([
             'name' => "kak sahirul",
             'email' => "kakaril@gmail.com",
-            'password' => bcrypt('anjaygurinjay')
+            'password' => bcrypt('anjayhurinjay')
         ]);
     }
 }

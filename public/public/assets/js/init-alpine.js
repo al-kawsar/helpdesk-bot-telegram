@@ -2,61 +2,75 @@ function data() {
   function getThemeFromLocalStorage() {
     // if user already changed the theme, use it
     if (window.localStorage.getItem('dark')) {
-      return JSON.parse(window.localStorage.getItem('dark'))
+      return JSON.parse(window.localStorage.getItem('dark'));
     }
 
     // else return their preferences
     return (
       !!window.matchMedia &&
       window.matchMedia('(prefers-color-scheme: dark)').matches
-    )
+    );
   }
 
   function setThemeToLocalStorage(value) {
-    window.localStorage.setItem('dark', value)
+    window.localStorage.setItem('dark', value);
+  }
+
+  // Mendapatkan URL saat aplikasi dimuat
+  const currentURL = window.location.pathname;
+
+  // Inisialisasi isPagesMenuOpen ke false
+  let isPagesMenuOpen = false;
+
+  // Memeriksa URL dan mengatur isPagesMenuOpen sesuai dengan kondisi
+  if (currentURL === "/admin/users" || currentURL === "/admin/grup") {
+    isPagesMenuOpen = true;
   }
 
   return {
     dark: getThemeFromLocalStorage(),
     toggleTheme() {
-      this.dark = !this.dark
-      setThemeToLocalStorage(this.dark)
+      this.dark = !this.dark;
+      setThemeToLocalStorage(this.dark);
     },
     isSideMenuOpen: false,
     toggleSideMenu() {
-      this.isSideMenuOpen = !this.isSideMenuOpen
+      this.isSideMenuOpen = !this.isSideMenuOpen;
     },
     closeSideMenu() {
-      this.isSideMenuOpen = false
+      this.isSideMenuOpen = false;
     },
     isNotificationsMenuOpen: false,
     toggleNotificationsMenu() {
-      this.isNotificationsMenuOpen = !this.isNotificationsMenuOpen
+      this.isNotificationsMenuOpen = !this.isNotificationsMenuOpen;
     },
     closeNotificationsMenu() {
-      this.isNotificationsMenuOpen = false
+      this.isNotificationsMenuOpen = false;
     },
     isProfileMenuOpen: false,
     toggleProfileMenu() {
-      this.isProfileMenuOpen = !this.isProfileMenuOpen
+      this.isProfileMenuOpen = !this.isProfileMenuOpen;
     },
     closeProfileMenu() {
-      this.isProfileMenuOpen = false
+      this.isProfileMenuOpen = false;
     },
-    isPagesMenuOpen: false,
+
+    // Menggunakan nilai isPagesMenuOpen yang telah ditentukan berdasarkan URL
+    isPagesMenuOpen: isPagesMenuOpen,
     togglePagesMenu() {
-      this.isPagesMenuOpen = !this.isPagesMenuOpen
+      this.isPagesMenuOpen = !this.isPagesMenuOpen;
     },
+
     // Modal
     isModalOpen: false,
     trapCleanup: null,
     openModal() {
-      this.isModalOpen = true
-      this.trapCleanup = focusTrap(document.querySelector('#modal'))
+      this.isModalOpen = true;
+      this.trapCleanup = focusTrap(document.querySelector('#modal'));
     },
     closeModal() {
-      this.isModalOpen = false
-      this.trapCleanup()
+      this.isModalOpen = false;
+      this.trapCleanup();
     },
-  }
+  };
 }

@@ -104,6 +104,9 @@
         @error('update_pertanyaan')
             tampilkanModalValidasiError("modalEdit{{ $pertanyaan->id }}");
         @enderror
+        @error('pesan')
+            tampilkanModalValidasiError("modalEdit{{ $grup->id }}");
+        @enderror
 
         function tampilkanModalValidasiError(modalId) {
             var modal = new bootstrap.Modal(document.getElementById(modalId));
@@ -144,6 +147,9 @@
     // ============ Modal ============
 
     // ============ Tooltips ============
+
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 
 

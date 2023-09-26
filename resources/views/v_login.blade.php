@@ -1,11 +1,11 @@
 @include('partials.v_head')
 {{-- <a href="/" class="btn btn-primary position-relative top-0 end-0 me-auto mx-2 mt-3">Back To Home</a> --}}
 <div class="flex items-center min-h-screen p-6 bg-gray-50 dark:bg-gray-900">
-    <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl dark:bg-gray-800">
+    <div class="flex-1 h-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg dark:bg-gray-800">
         <div class="flex flex-col overflow-y-auto md:flex-row">
             <div class="md:h-auto md:w-1/2 p-3 h-full md:order-2">
                 <img aria-hidden="true" class="object-contain  dark:hidden "
-                    src="{{ asset('/public/pages') }}/../assets/img/LOGO_CAMABA.jpg" alt="Office" />
+                    src="/img/logounm.png" alt="Office" />
             </div>
             <form action="{{ route('auth.login') }}" method="post"
                 class="flex items-center justify-center p-6 sm:p-12 md:w-1/2 md:order-1">

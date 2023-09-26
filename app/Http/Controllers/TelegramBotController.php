@@ -10,27 +10,44 @@ use App\Models\Pertanyaan;
 use App\Models\SubKategori;
 use App\Models\SubSubKategori;
 use App\Models\TelegramUser;
+use Telegram\Bot\Api;
 
 class TelegramBotController extends Controller
 {
+    private $botStatus = 'aktif';
 
-    private function Telegram(string $method, $parameters)
+    public function botAction(Request $request)
     {
-        $token = $_ENV['TELEGRAM_BOT_TOKEN'];
-        $url = "https://api.telegram.org/bot{$token}/$method";
+        $grup = $request->input('grup');
 
-        $options = array(
-            'http' => [
-                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method' => 'POST',
-                'content' => http_build_query($parameters),
-            ],
-        );
+        $request->validate([
+            'grup' => 'required',
+            'pesan' => 'required',
+        ], [
+            'grup.required' => 'Parameter grup wajib diisi.',
+            'pesan.required' => 'Pesan wajib diisi.'
+        ]);
+        try {
+            Telegram::sendMessage([
+                'chat_id' => $grup,
+                'text' => $request->input('pesan')
+            ]);
 
-        $context = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
+            // Redirect dengan pesan sukses
+            return redirect()->route('bot.grup')->with('success_message', 'Pesan berhasil terkirim!');
+        } catch (\Exception $e) {
+            return redirect()->route('bot.grup')->with(
+                [
+                    'failed_message' => "Error {$e->getMessage()}",
+                    'title' => "Gagal Mengirim Pesan!"
+                ]
+            );
+        }
+    }
 
-        return $result;
+    public function botInfo()
+    {
+        return 'ini halaman info bot';
     }
 
     public function generateInlineKeyboard($items, $callbackKey, $type, $buttonsPerRow = 3)
@@ -58,47 +75,99 @@ class TelegramBotController extends Controller
         return $keyboard;
     }
 
+    public function setWebhook()
+    {
+        // Set the webhook URL
+        Telegram::setWebhook([
+            'url' => 'http://yourserver.com/telegram-bot',
+        ]);
+
+        return 'ok';
+    }
+
+    public function turnOnBot()
+    {
+        $this->botStatus = 'aktif';
+        return redirect()->back()->with(['success_message' => "Bot Berhasil Dinyalakan", 'title' => "Berhasil!!"]);
+    }
+
+    public function turnOffBot()
+    {
+        $this->botStatus = 'mati';
+        return redirect()->back()->with(['success_message' => "Bot Berhasil Dimatikan", 'title' => "Berhasil!!"]);
+    }
+
+    public function botMaintenance()
+    {
+        $this->botStatus = 'perbaikan';
+        return redirect()->back()->with(['success_message' => "Status Bot Sedang Perbaikan", 'title' => "Berhasil!!"]);
+    }
+
+
+    private $id_bot = 5992144298;
     public function handleBot(Request $request)
     {
-        $update = Telegram::getUpdates();
+
+        $update = $request->all();
+
 
         // Cek Bot Jika Dimasukkan Di Grup Baru
-        if (isset($update['new_chat_member']['status']) && $update['new_chat_member']['status'] === "administrator") {
-            $id_bot = 5992144298;
+        if (isset($update['my_chat_member']['new_chat_member'])) {
             $newChatMember = $update['my_chat_member']['new_chat_member'];
             $chat = $update['my_chat_member']['chat'];
 
+            $id_bot = $this->id_bot;
+
+            $check_id_bot = $newChatMember['user']['id'];
+            $statusBot = $newChatMember['status'];
+
             $id_grup = $chat['id'];
             $nama_grup = $chat['title'];
+            $username_grup = $chat['username'] ?? '';
             $tipe_grup = $chat['type'];
-            $check_id_bot = $newChatMember['user']['id'];
 
-            if ($id_bot === $check_id_bot) {
-                $checkIdGrup = Group::where('id_grup', $id_grup)->first();
-                if (!$checkIdGrup) {
-                    Group::create([
-                        'id_grup' => $id_grup,
-                        'nama_grup' => $nama_grup,
-                        'tipe_grup' => $tipe_grup
-                    ]);
+            if ($statusBot !== 'left') {
+                if ($id_bot === $check_id_bot) {
+                    $checkIdGrup = Group::where('id_grup', $id_grup)->first();
+                    if (!$checkIdGrup) {
+                        Group::create([
+                            'id_grup' => $id_grup,
+                            'nama_grup' => $nama_grup,
+                            'username' => $username_grup,
+                            'tipe_grup' => $tipe_grup
+                        ]);
+                    }
                 }
+            } else {
+                $message = "grup dihapus\nid_grup:{$id_grup}\nnama_grup:{$nama_grup}";
+                Group::where('id_grup', $id_grup)->delete();
             }
         }
 
 
-        // if (isset($update['my_chat_member']))
+        if (isset($update["message"]['text'])) {
 
-        if (isset($update["message"])) {
-            $chat_id = $update["message"]["chat"]["id"];
-            $message = $update['message']['text'];
-            $userId = $update['message']['from']['id'];
-            $first_name = $update['message']['from']['first_name'];
-            $last_name = $update['message']['from']['last_name'];
+            $msg = $update['message'];
+            $chat_id = $msg["chat"]["id"];
+            $message = $msg['text'];
+            $msg_id = $msg['message_id'];
+            $userId = $msg['from']['id'];
+            $first_name = $msg['from']['first_name'];
+            $last_name = isset($msg['from']['last_name']) ? $msg['from']['last_name'] : null;
             $username = $update['message']['from']['username'];
 
-            $checkUser = TelegramUser::where("chat_id", $userId)->first();
+            $checkGrup = Group::where("id_grup", $chat_id)->first();
+            if ($update['message']['chat']['type'] !== 'private' && !$checkGrup) {
+                Group::create([
+                    'id_grup' => $chat_id,
+                    'username' => $update['message']['chat']['username'] ?? '',
+                    'nama_grup' => $update['message']['chat']['title'],
+                    'tipe_grup' => $update['message']['chat']['type']
+                ]);
+            }
 
-            if ($checkUser === null) {
+            $checkUser = TelegramUser::where("chat_id", $userId)->first();
+            if (!$checkUser) {
                 TelegramUser::create([
                     'chat_id' => $userId,
                     'first_name' => $first_name,
@@ -107,32 +176,72 @@ class TelegramBotController extends Controller
                 ]);
             }
 
-
-            if ($message === "/start" || $message === "/start@helpdesk_camaba_bot") {
-                $message = "from : @$username\n";
-                $message .= "Halo saya adalah bot Helpdesk ketik atau klik -> [/help] untuk melihat detail informasi";
-                self::Telegram('sendMessage', [
-                    'chat_id' => $chat_id,
-                    'text' => $message
-                ]);
-            }
-            if ($message === "/help" || $message === "/help@helpdesk_camaba_bot") {
-                $kategoris = Kategori::with('subKategori')->latest()->paginate(20);
-                $keyboard = self::generateInlineKeyboard($kategoris, 'id', 'kategori');
-                if ($kategoris->isNotEmpty()) {
-                    $message = "-> KATEGORIS \n\n";
-                    foreach ($kategoris as $number => $kategori) {
-                        $message .= ($number + 1) . ". {$kategori['kategori']}\n";
+            switch ($message) {
+                case '/start' || '/start@helpdesk_camaba_bot':
+                    $message = "from : @$username\n";
+                    $message .= "Halo saya adalah bot Helpdesk ketik atau klik -> [/help] untuk melihat detail informasi";
+                    Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $message,
+                        'reply_to_message_id' => $msg_id
+                    ]);
+                    break;
+                case '/help' || '/help@helpdesk_camaba_bot':
+                    $kategoris = Kategori::with('subKategori')->latest()->paginate(20);
+                    $keyboard = self::generateInlineKeyboard($kategoris, 'id', 'kategori');
+                    if ($kategoris->isNotEmpty()) {
+                        $message = "-> KATEGORIS \n\n";
+                        foreach ($kategoris as $number => $kategori) {
+                            $message .= ($number + 1) . ". {$kategori['kategori']}\n";
+                        }
+                    } else {
+                        $message = "Maaf, Kategori Masih Kosong Atau Belum Ditambahkan ";
                     }
-                } else {
-                    $message = "Maaf, Kategori Masih Kosong Atau Belum Ditambahkan ";
-                }
-                self::Telegram('sendMessage', [
-                    'chat_id' => $chat_id,
-                    'text' => $message,
-                    'reply_markup' => json_encode($keyboard)
-                ]);
+                    Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $message,
+                        'reply_markup' => json_encode($keyboard),
+                        'reply_to_message_id' => $msg_id
+                    ]);
+                    break;
+                default:
+                    $message = "perintah tidak dikenali";
+                    Telegram::sendMessage([
+                        'chat_id' => $chat_id,
+                        'text' => $message,
+                        'reply_to_message_id' => $msg_id
+                    ]);
+                    break;
             }
+
+            // if ($message === "/start" || $message === "/start@helpdesk_camaba_bot") {
+            //     $message = "from : @$username\n";
+            //     $message .= "Halo saya adalah bot Helpdesk ketik atau klik -> [/help] untuk melihat detail informasi";
+            //     Telegram::sendMessage([
+            //         'chat_id' => $chat_id,
+            //         'text' => $message,
+            //         'reply_to_message_id' => $msg_id
+            //     ]);
+            // }
+
+            // if ($message === "/help" || $message === "/help@helpdesk_camaba_bot") {
+            //     $kategoris = Kategori::with('subKategori')->latest()->paginate(20);
+            //     $keyboard = self::generateInlineKeyboard($kategoris, 'id', 'kategori');
+            //     if ($kategoris->isNotEmpty()) {
+            //         $message = "-> KATEGORIS \n\n";
+            //         foreach ($kategoris as $number => $kategori) {
+            //             $message .= ($number + 1) . ". {$kategori['kategori']}\n";
+            //         }
+            //     } else {
+            //         $message = "Maaf, Kategori Masih Kosong Atau Belum Ditambahkan ";
+            //     }
+            //     Telegram::sendMessage([
+            //         'chat_id' => $chat_id,
+            //         'text' => $message,
+            //         'reply_markup' => json_encode($keyboard),
+            //         'reply_to_message_id' => $msg_id
+            //     ]);
+            // }
         }
 
         // callback query
@@ -140,6 +249,7 @@ class TelegramBotController extends Controller
         if (isset($update["callback_query"])) {
             $callbackQuery = $update["callback_query"];
             $chat_id = $callbackQuery["message"]["chat"]["id"];
+            $msg_id = $update['callback_query']['message']['message_id'];
             $data = $callbackQuery["data"];
             [$type, $id] = explode('-', $data);
 
@@ -147,17 +257,18 @@ class TelegramBotController extends Controller
                 $Kategori = Kategori::with('subKategori')->find($id);
                 $keyboard = self::generateInlineKeyboard($Kategori->subKategori, 'id', 'subKategori');
                 if ($Kategori->subKategori->isNotEmpty()) {
-                    $message = "-> Sub-Kategoris\n\n";
+                    $message = "-> Sub-Kategoris $Kategori->kategori\n\n";
                     foreach ($Kategori->subKategori as $number => $subKategori) {
                         $message .= ($number + 1) . ". {$subKategori->sub_kategori}\n";
                     }
                 } else {
                     $message = "Maaf, Sub Kategori $Kategori->kategori Belum Tersedia";
                 }
-                self::Telegram('sendMessage', [
+                Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => $message,
-                    'reply_markup' => json_encode($keyboard)
+                    'reply_markup' => json_encode($keyboard),
+                    // 'reply_to_message_id' => $msg_id
                 ]);
             } else if ($type === "subKategori") {
                 $subKategori = SubKategori::with('subSubKategori')->find($id);
@@ -171,10 +282,11 @@ class TelegramBotController extends Controller
                     $message = "Maaf, Sub Sub Kategori {$subKategori->sub_kategori} Belum Tersedia";
                 }
 
-                self::Telegram('sendMessage', [
+                Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => $message,
-                    'reply_markup' => json_encode($keyboard)
+                    'reply_markup' => json_encode($keyboard),
+                    // 'reply_to_message_id' => $msg_id
                 ]);
             } else if ($type === "subSubKategori") {
                 $subSubKategori = SubSubKategori::with('pertanyaan')->find($id);
@@ -187,10 +299,11 @@ class TelegramBotController extends Controller
                 } else {
                     $message = "Maaf, Pertanyaan {$subSubKategori->sub_sub_kategori} Belum Tersedia ";
                 }
-                self::Telegram('sendMessage', [
+                Telegram::sendMessage([
                     'chat_id' => $chat_id,
                     'text' => $message,
-                    'reply_markup' => json_encode($keyboard)
+                    'reply_markup' => json_encode($keyboard),
+                    // 'reply_to_message_id' => $msg_id
                 ]);
             } else if ($type === "pertanyaan") {
                 $pertanyaan = Pertanyaan::find($id)->jawaban;
@@ -198,15 +311,30 @@ class TelegramBotController extends Controller
                     $message = "-> Jawaban\n\n";
                     $message .= $pertanyaan;
 
-                    self::Telegram('sendMessage', [
+                    Telegram::sendMessage([
                         'chat_id' => $chat_id,
                         'text' => $message,
-                        'reply_markup' => json_encode($keyboard)
+                        // 'reply_to_message_id' => $msg_id
                     ]);
                 }
             }
         }
+        // else {
+        //     if ($this->botStatus == 'perbaikan' && isset($update["message"])) {
+        //         $chat_id = $update["message"]["chat"]["id"];
+        //         Telegram::sendMessage([
+        //             'chat_id' => $chat_id,
+        //             'text' => 'Mohon Maaf, Bot Sedang Di Perbaiki',
+        //         ]);
+        //     } elseif ($this->botStatus == 'mati' && isset($update["message"])) {
+        //         $chat_id = $update["message"]["chat"]["id"];
+        //         Telegram::sendMessage([
+        //             'chat_id' => $chat_id,
+        //             'text' => 'Bot mati',
+        //         ]);
+        //     }
+        // }
 
-        return response('success'); // Balas dengan 'ok' untuk menandakan penerimaan update yang sukses
+        return response('success');
     }
 }

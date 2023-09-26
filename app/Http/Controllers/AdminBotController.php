@@ -22,6 +22,7 @@ class AdminBotController extends Controller
         $sub_sub_kategoris = SubSubKategori::count();
         $pertanyaans = Pertanyaan::count();
         $users = TelegramUser::count();
+        $grups = Group::count();
 
         return view('admin.va_dashboard', [
             'title' => "Admin Dashboard",
@@ -30,7 +31,8 @@ class AdminBotController extends Controller
             'kategoris' => number_format($kategoris, 0, ',', '.'),
             'sub_kategoris' => number_format($sub_kategoris, 0, ',', '.'),
             'sub_sub_kategoris' => number_format($sub_sub_kategoris, 0, ',', '.'),
-            'pertanyaans' => number_format($pertanyaans, 0, ',', '.')
+            'pertanyaans' => number_format($pertanyaans, 0, ',', '.'),
+            'grups' => number_format($grups, 0, ',', '.')
         ]);
     }
 
@@ -43,16 +45,18 @@ class AdminBotController extends Controller
         ]);
     }
 
-    public function grup(){
-        return view('admin.va_grup',[
+    public function grup()
+    {
+        return view('admin.va_grup', [
             'title' => "Admin Grup",
             'teks' => "Grup",
             'grups' => Group::paginate(20)
         ]);
     }
 
-    public function inbox(){
-        return view('admin.va_inbox',[
+    public function inbox()
+    {
+        return view('admin.va_inbox', [
             'title' => "Admin Inbox",
             'teks' => "Inbox",
         ]);
@@ -60,23 +64,47 @@ class AdminBotController extends Controller
 
     public function kategori()
     {
+        $query = request()->input('search'); // Ambil query pencarian dari request
 
-        // PaginateKategoriJob::dispatch();
+        $kategoriQuery = Kategori::with('subKategori')->latest();
+
+        if ($query !== null) {
+            $kategoriQuery->where('kategori', 'like', '%' . $query . '%');
+        }
+
+        $kategoris = $kategoriQuery->paginate(20);
 
         return view('admin.kategori.va_kategori', [
             'title' => "Admin Kategori",
             'teks' => "Kategori",
-            'kategoris' => Kategori::with('subKategori')->latest()->paginate(20)
+            'kategoris' => $kategoris,
         ]);
     }
 
+
     public function subKategori()
     {
+
+        $query = request()->input('search'); // Ambil query pencarian dari request
+        $sub_kategorisQuery = SubKategori::with('kategori')->latest();
+
+        if ($query !== null) {
+            $sub_kategorisQuery
+                ->where(function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('sub_kategori', 'like', '%' . $query . '%');
+                })
+                ->orWhereHas('kategori', function ($queryBuilder) use ($query) {
+                    $queryBuilder->where('kategori', 'like', '%' . $query . '%');
+                });
+        }
+
+        $sub_kategoris = $sub_kategorisQuery->paginate(20);
+
         return view('admin.sub-kategori.va_subkategori', [
             'title' => "Admin Sub Kategori",
             'teks' => "Sub-Kategori",
             'kategori' => Kategori::paginate(50),
-            'sub_kategoris' => SubKategori::with('kategori')->latest()->paginate(10)
+            'sub_kategoris' => $sub_kategoris
         ]);
     }
 
@@ -86,7 +114,7 @@ class AdminBotController extends Controller
             'title' => "Admin Sub Sub Kategori",
             'teks' => "Sub-Sub-Kategori",
             'sub_kategori' => SubKategori::paginate(50),
-            'sub_sub_kategoris' => SubSubKategori::with(['subKategori'])->latest()->paginate(10)
+            'sub_sub_kategoris' => SubSubKategori::with(['subKategori'])->latest()->paginate(20)
         ]);
     }
 
@@ -96,7 +124,7 @@ class AdminBotController extends Controller
             'title' => "Admin Pertanyaan",
             'teks' => "Pertanyaan",
             'sub_sub_kategori' => SubSubKategori::paginate(50),
-            'pertanyaans' => Pertanyaan::with('subSubKategori')->latest()->paginate(8)
+            'pertanyaans' => Pertanyaan::with('subSubKategori')->latest()->paginate(20)
         ]);
     }
 }

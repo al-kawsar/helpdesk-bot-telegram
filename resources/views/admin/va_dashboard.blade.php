@@ -28,6 +28,21 @@
                     <div
                         class="p-3 mr-4 text-orange-500 bg-blue-100 border rounded-full dark:text-orange-100 dark:bg-orange-500">
                         {{-- Icon --}}
+                        <img src="/icon/groups.png" alt="Users Icon" class="p-2" width="100">
+                    </div>
+                    <div>
+                        <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                            Total Grup
+                        </p>
+                        <p class="text-lg font-semibold text-gray-700 dark:text-gray-200">
+                            {{ $grups ?? '' }}
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center p-4 bg-white rounded-lg shadow-xs dark:bg-gray-800">
+                    <div
+                        class="p-3 mr-4 text-orange-500 bg-blue-100 border rounded-full dark:text-orange-100 dark:bg-orange-500">
+                        {{-- Icon --}}
                         <img src="/icon/categories.png" alt="Kategori Icon" class="p-2" width="100">
                     </div>
                     <div>
