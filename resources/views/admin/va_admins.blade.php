@@ -14,69 +14,47 @@
             @endif
 
             <button class="btn btn-primary my-2 tambah-kategori ms-auto" type="button" data-bs-toggle="modal"
-                data-bs-target="#modalKategori">Tambah
+                data-bs-target="#modalAdmin">Tambah
                 {{ $teks }}</button>
 
             <!-- Modal Tambah Kategori-->
-            <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
+            <div class="modal fade" id="modalAdmin" tabindex="-1" aria-hidden="true">
                 <div class="modal-dialog">
-                    <form action="/admin/sub-kategori" method="post">
+                    <form action="/admin/admins" method="post">
+                        @csrf
+                        @method('POST')
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
                                     id="exampleModalLabel">Modal
-                                    Tambah {{ $teks }} </h1>
+                                    Tambah Admin </h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
-
                             <div class="modal-body">
-                                <div class="px-4 py-3 dark:bg-gray-800 height">
-                                    @error('tambah_sub-kategori')
+                                <div class="px-4 py-3  dark:bg-gray-800 height">
+                                    {{-- Display validation errors if there are any --}}
+
+                                    @error('email')
                                         <div class="alert alert-sm alert-danger">
-                                            {{ $message }}</div>
+                                            {{ $message }}
+                                        </div>
                                     @enderror
+
                                     @csrf
                                     <label class="block text-sm">
-                                        <span class="text-gray-700 dark:text-gray-400">Nama Sub Sub Kategori <span
-                                                class="text-danger">*</span></span>
-                                        <input
-                                            {{ isset($kategori[0]) && !empty($kategori[0]) ? '' : 'disabled readonly ?>' }}
-                                            class=" block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                                            name="tambah_sub-kategori" required />
+                                        <span class="text-gray-700 dark:text-gray-400">Email
+                                            Admin <span class="text-danger">*</span></span>
+                                        <input type="email"
+                                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                            name="email" value="{{ old('email') }}" required autofocus autocomplete="off" />
                                     </label>
-                                    {{-- Display placeholder for alerts --}}
-                                    <div id="tambahKolomKategori"></div>
-
-                                    <button type="button" class="btn btn-secondary my-3" id="liveAlertBtn">Tambah
-                                        Kolom</button>
-
-                                    @if (isset($kategori[0]) && !empty($kategori[0]))
-                                        <label class="block text-sm my-3">
-                                            <span class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih Kategori
-                                                <span class="text-danger">*</span>
-                                            </span>
-                                            <select name="option"
-                                                @foreach ($kategori as $item)
-                                                    class="block p-2 rounded mt-1 border text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
-                                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option> @endforeach
-                                                </select>
-                                        </label>
-                                    @else
-                                        <a href="/admin/kategori" class="d-block text-sm underline text-danger">Silahkan
-                                            Isi Kategori Terlebih Dahulu</a>
-                                    @endif
-
-
-
-
                                 </div>
                             </div>
-
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Batal</button>
+                                <button type="button" class="btn  btn-danger" data-bs-dismiss="modal">Batal</button>
                                 <button type="submit" class="btn btn-success">Tambah
-                                    {{ $teks }}</button>
+                                    Admin</button>
                             </div>
                         </div>
                     </form>
@@ -90,47 +68,69 @@
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                <th class="px-4 py-3"><input type="checkbox" name="check" id="check"></th>
                                 <th class="px-4 py-3">#</th>
-                                <th class="px-4 py-3">Sub-Kategori</th>
-                                <th class="px-4 py-3">Kategori</th>
-                                <th class="px-4 py-3">Tanggal ditambahkan</th>
+                                <th class="px-4 py-3">Name</th>
+                                <th class="px-4 py-3">Email</th>
+                                <th class="px-4 py-3">Password</th>
+                                <th class="px-4 py-3">status</th>
+                                <th class="px-4 py-3">Tanggal Ditambahkan</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
-                            @if (request('search') && $sub_kategoris->isEmpty())
+                            @if (request('search') && $admins->isEmpty())
                                 <tr>
-                                    <td colspan="5" class="text-center fs-1 py-5 fw-bold">Pencarian <span
-                                            class="text-danger">{{ request()->get('search') }}</span> tidak ditemukan...
+                                    <td colspan="8" class="text-center fs-1 py-5 fw-bold">Pencarian <span
+                                            class="text-danger">{{ request()->get('search') }}</span> tidak ditemukan... <p>
+                                            🙏</p>
                                     </td>
                                 </tr>
-                            @elseif($sub_kategoris->isEmpty())
+                            @elseif($admins->isEmpty())
                                 <tr>
-                                    <td colspan="5" class="text-center fs-1 py-5 fw-bold">Sub Kategori <span
-                                            class="text-danger">Kosong</span>...</td>
+                                    <td colspan="8" class="text-center fs-1 py-5 fw-bold">Admin <span
+                                            class="text-danger">Kosong</span>...😴</td>
                                 </tr>
                             @else
-                                @foreach ($sub_kategoris as $number => $sub_kategori)
+                                @foreach ($admins as $number => $admin)
                                     <tr class="text-gray-700 dark:text-gray-400">
                                         <td class="px-4 py-3">
-                                            {{ $number + $sub_kategoris->firstItem() }}
+                                            <input type="checkbox" name="check" id="check">
+                                        </td>
+                                        <td class="px-4 py-3">
+                                            {{ $number + $admins->firstItem() }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ $sub_kategori->sub_kategori }}
+                                            {{ $admin->name }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ $sub_kategori->kategori->kategori }}
+                                            {{ $admin->email }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ $sub_kategori->created_at->format('d M Y') }}
+                                            @php
+                                                try {
+                                                    $decrypted = Crypt::decrypt($admin->password);
+                                                    echo explode('.',$decrypted)[1];
+                                                } catch (Illuminate\Contracts\Encryption\DecryptException $e) {
+                                                    echo $e->getMessage();
+                                                }
+                                            @endphp
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
+                                            <div class="badge bg-info p-2">
+                                                {{ $admin->role_id !== '1' ? 'admin':''  }}
+                                            </div>
+                                        </td>
+
+                                        <td class="px-4 py-3 text-sm">
+                                            {{ $admin->created_at->format('d M Y | H:i') }}
                                         </td>
                                         <td class="px-4 py-3">
                                             <div class="flex items-center space-x-4 text-sm">
 
                                                 <button type="button"
                                                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-green-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-green"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalEdit{{ $sub_kategori->id }}">
+                                                    data-bs-toggle="modal" data-bs-target="#modalEdit{{ $admin->id }}">
                                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                         viewBox="0 0 20 20">
                                                         <path
@@ -139,61 +139,45 @@
                                                     </svg>
                                                 </button>
 
-                                                <!-- ================== Modal Edit Sub Kategori ================== -->
-                                                <div class="modal fade" id="modalEdit{{ $sub_kategori->id }}"
-                                                    tabindex="-1" aria-hidden="true">
+                                                <!-- Modal Edit Kategori-->
+                                                <div class="modal fade" id="modalEdit{{ $admin->id }}" tabindex="-1"
+                                                    aria-hidden="true">>
                                                     <div class="modal-dialog">
-                                                        <form
-                                                            action="/admin/edit-sub-kategori/{{ $sub_kategori->sub_kategori }}"
-                                                            method="post">
+                                                        <form action="/admin/admins/{{ $admin->id }}" method="post">
                                                             @csrf
+                                                            @method('PUT')
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
-                                                                        id="exampleModalLabel">Edit {{ $teks }}
-                                                                    </h1>
+                                                                        id="exampleModalLabel">Edit Admin</h1>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal" aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     {{-- Display validation errors if there are any --}}
-                                                                    @error('update_sub_kategori')
+                                                                    @error('admins')
                                                                         <div class="alert alert-sm alert-danger">
-                                                                            {{ $message }}</div>
+                                                                            <p>{{ $message }}</p>
+                                                                        </div>
                                                                     @enderror
-                                                                    <label class="block text-sm">
+
+                                                                    <label class="block text-sm mb-3">
                                                                         <span class="text-gray-700 dark:text-gray-400">Nama
-                                                                            {{ $teks }} <span
-                                                                                class="text-danger">*</span></span>
+                                                                            Admin <span class="text-danger">*</span></span>
                                                                         <input
                                                                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                                                                            name="update_sub_kategori"
-                                                                            value="{{ $sub_kategori->sub_kategori }}"
-                                                                            required>
+                                                                            name="name" value="{{ $admin->name }}"
+                                                                            autofocus>
+                                                                    </label>
+                                                                    <label class="block text-sm mb-3">
+                                                                        <span class="text-gray-700 dark:text-gray-400">Email
+                                                                            Admin <span class="text-danger">*</span></span>
+                                                                        <input
+                                                                            class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
+                                                                            name="email" value="{{ $admin->email }}"
+                                                                            autofocus>
                                                                     </label>
 
-                                                                    <label class="block text-sm my-3">
-                                                                        <span
-                                                                            class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih
-                                                                            Kategori <span
-                                                                                class="text-danger">*</span></span>
-                                                                        <select name="option"
-                                                                            class="block p-2 rounded mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray border">
-                                                                            @foreach ($kategori as $item)
-                                                                                @if ($item->kategori === $sub_kategori->kategori->kategori)
-                                                                                    <option
-                                                                                        value="{{ $sub_kategori->kategori->id }}"
-                                                                                        selected>
-                                                                                        {{ $sub_kategori->kategori->kategori }}
-                                                                                    </option>
-                                                                                @else
-                                                                                    <option value="{{ $item->id }}">
-                                                                                        {{ $item->kategori }}</option>
-                                                                                @endif
-                                                                            @endforeach
-                                                                        </select>
-
-                                                                    </label>
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-danger"
@@ -208,10 +192,9 @@
 
 
 
-                                                <a href="/admin/hapus-sub-kategori/{{ $sub_kategori->id }}"
+                                                <a href="/admin/hapus-admin/{{ $admin->id }}"
                                                     class="flex items-center justify-between px-2 py-2 text-sm font-medium leading-5 text-red-600 rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-red delete-link"
-                                                    data-kategori="{{ $sub_kategori->sub_kategori }}"
-                                                    aria-label="Delete">
+                                                    data-kategori="{{ $admin->name }}" aria-label="Delete">
                                                     <svg class="w-5 h-5" aria-hidden="true" fill="currentColor"
                                                         viewBox="0 0 20 20">
                                                         <path fill-rule="evenodd"
@@ -227,13 +210,18 @@
                             @endif
                         </tbody>
                     </table>
+
+
                 </div>
                 {{-- Pagination --}}
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
-                        {{ $sub_kategoris }}
+                        {{ $admins->appends([
+                                'search' => request('search'),
+                            ])->links() }}
                     </ul>
                 </nav>
+
             </div>
         </div>
     </main>

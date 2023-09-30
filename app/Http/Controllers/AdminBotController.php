@@ -10,6 +10,7 @@ use App\Models\SubKategori;
 use App\Models\SubSubKategori;
 use App\Models\TelegramUser;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 
 class AdminBotController extends Controller
@@ -36,6 +37,15 @@ class AdminBotController extends Controller
         ]);
     }
 
+    public function admins()
+    {
+        $title = 'Admin Tables';
+        $teks = 'Admin';
+        // $admins = User::where('role_id', '0')->paginate(20);
+        $admins = User::where('role_id', '0')->latest()->paginate(20);
+        return view('admin.va_admins', compact('title', 'teks', 'admins'));
+    }
+
     public function user()
     {
         return view('admin.va_users', [
@@ -54,13 +64,13 @@ class AdminBotController extends Controller
         ]);
     }
 
-    public function inbox()
-    {
-        return view('admin.va_inbox', [
-            'title' => "Admin Inbox",
-            'teks' => "Inbox",
-        ]);
-    }
+    // public function inbox()
+    // {
+    //     return view('admin.va_inbox', [
+    //         'title' => "Admin Inbox",
+    //         'teks' => "Inbox",
+    //     ]);
+    // }
 
     public function kategori()
     {
@@ -79,6 +89,16 @@ class AdminBotController extends Controller
             'teks' => "Kategori",
             'kategoris' => $kategoris,
         ]);
+    }
+
+    public function profilePage(User $user)
+    {
+        if ($user->id != auth()->user()->id){
+            return redirect()->back()->with('warning_message','Anda tidak punya akses!');
+        }
+            $title = 'Admin Profile ' . $user->name;
+        $teks = '';
+        return view('admin.va_profile-admin', compact('title', 'teks', 'user'));
     }
 
 

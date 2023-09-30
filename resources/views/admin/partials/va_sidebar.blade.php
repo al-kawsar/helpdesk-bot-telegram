@@ -1,5 +1,5 @@
 {{-- Desktop Sidebar --}}
-<aside class="z-20 hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 border">
+<aside class=" hidden w-64 overflow-y-auto bg-white dark:bg-gray-800 md:block flex-shrink-0 border">
     <div class="py-4 text-gray-500 dark:text-gray-400">
         <a class="d-flex justify-content-center" href="/admin/dashboard">
             <img src="{{ asset('img') }}/logounm.png" class="" alt="" width="80">
@@ -9,12 +9,12 @@
 
                 {!! $title === 'Admin Dashboard'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Dashboard'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/dashboard">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.dashboard') }}">
                     <svg class='w-5 h-5' aria-hidden='true' fill='none' stroke-linecap='round'
                         stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' stroke='currentColor'>
                         <path
@@ -24,8 +24,22 @@
                     <span class='ml-4'>Dashboard</span>
                 </a>
             </li>
-        </ul>
-        <ul>
+            @if (auth()->user()->role_id === '1')
+                <li class="relative px-6 py-3">
+
+                    {!! $title === 'Admin Tables'
+                        ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                        : '' !!}
+
+                    <a class="{!! $title === 'Admin Tables'
+                        ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
+                        : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.admins') }}">
+                        <i class="bi bi-person fs-5"></i>
+                        <span class='ml-4'>Admins</span>
+                    </a>
+                </li>
+            @endif
             <li class="relative px-6 py-3">
                 <button
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
@@ -57,14 +71,14 @@
 
                             {!! $title === 'Admin User'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                                 : '' !!}
 
                             <a class="{!! $title === 'Admin User'
                                 ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/users">
+                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.user') }}">
                                 <i class="bi bi-person fs-5"></i>
-                                <span class='ml-4'>Users</span>
+                                <span class='ml-4'>User Telegram</span>
                             </a>
                         </li>
                         <li
@@ -72,14 +86,14 @@
 
                             {!! $title === 'Admin Grup'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                                 : '' !!}
 
                             <a class="{!! $title === 'Admin Grup'
                                 ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/grup">
+                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.grup') }}">
                                 <i class="bi bi-person-vcard fs-5"></i>
-                                <span class='ml-4'>Grup</span>
+                                <span class='ml-4'>Grup Telegram</span>
                             </a>
                         </li>
                         <li
@@ -87,38 +101,23 @@
 
                             {!! $title === 'Admin Inbox'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
                                 : '' !!}
 
                         </li>
                     </ul>
                 </template>
             </li>
-
-            {{-- <li class="relative px-6 py-3">
-
-                {!! $title === 'Admin User'
-                    ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
-                    : '' !!}
-
-                <a class="{!! $title === 'Admin User'
-                    ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/user">
-                    <i class="bi bi-person fs-5"></i>
-                    <span class='ml-4'>Users</span>
-                </a>
-            </li> --}}
             <li class="relative px-6 py-3">
 
                 {!! $title === 'Admin Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.kategori') }}">
                     <i class="bi bi-box fs-5"></i>
                     <span class='ml-4'>Kategori</span>
                 </a>
@@ -127,12 +126,12 @@
 
                 {!! $title === 'Admin Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.sub-kategori') }}">
                     <i class="bi bi-box2 fs-5"></i>
                     <span class='ml-4'>Sub Kategori</span>
                 </a>
@@ -141,12 +140,12 @@
 
                 {!! $title === 'Admin Sub Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Sub Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-sub-kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.sub-sub-kategori') }}">
                     <i class="bi bi-boxes fs-5"></i>
                     <span class='ml-4'>Sub Sub Kategori</span>
                 </a>
@@ -155,37 +154,17 @@
 
                 {!! $title === 'Admin Pertanyaan'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Pertanyaan'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/pertanyaan">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.pertanyaan') }}">
                     <i class="bi bi-lightbulb fs-5"></i>
                     <span class='ml-4'>Pertanyaan</span>
                 </a>
             </li>
-            {{-- <li class="relative px-6 py-3">
-
-                {!! $title === 'Admin Pertanyaan'
-                    ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
-                    : '' !!}
-
-                <a class="inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
-                    href="/admin/logout">
-                    <i class="bi bi-box-arrow-left fs-5"></i>
-                    <span class='ml-4'>Logout</span>
-                </a>
-            </li> --}}
         </ul>
-        <div class="px-6 mb-6">
-            <a href="/admin/logout"
-                class="flex items-center w-100 gap-3  w-full py-2 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-500 focus:outline-none">
-                <i class="bi bi-box-arrow-left fs-5"></i>
-                Logout
-            </a>
-        </div>
     </div>
 </aside>
 
@@ -207,12 +186,12 @@
 
                 {!! $title === 'Admin Dashboard'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Dashboard'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/dashboard">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.dashboard') }}">
                     <svg class='w-5 h-5' aria-hidden='true' fill='none' stroke-linecap='round'
                         stroke-linejoin='round' stroke-width='2' viewBox='0 0 24 24' stroke='currentColor'>
                         <path
@@ -222,6 +201,22 @@
                     <span class='ml-4'>Dashboard</span>
                 </a>
             </li>
+            @if (auth()->user()->role_id === '1')
+                <li class="relative px-6 py-3">
+
+                    {!! $title === 'Admin Tables'
+                        ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                        : '' !!}
+
+                    <a class="{!! $title === 'Admin Tables'
+                        ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
+                        : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.admins') }}">
+                        <i class="bi bi-person fs-5"></i>
+                        <span class='ml-4'>Admins</span>
+                    </a>
+                </li>
+            @endif
             <li class="relative px-6 py-3">
                 <button
                     class="inline-flex items-center justify-between w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200"
@@ -253,14 +248,14 @@
 
                             {!! $title === 'Admin User'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
                                 : '' !!}
 
                             <a class="{!! $title === 'Admin User'
                                 ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/users">
+                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.user') }}">
                                 <i class="bi bi-person fs-5"></i>
-                                <span class='ml-4'>Users</span>
+                                <span class='ml-4'>User Telegram</span>
                             </a>
                         </li>
                         <li
@@ -268,14 +263,14 @@
 
                             {!! $title === 'Admin Grup'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
                                 : '' !!}
 
                             <a class="{!! $title === 'Admin Grup'
                                 ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/grup">
+                                : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.grup') }}">
                                 <i class="bi bi-person-vcard fs-5"></i>
-                                <span class='ml-4'>Grup</span>
+                                <span class='ml-4'>Grup Telegram</span>
                             </a>
                         </li>
                         <li
@@ -283,7 +278,7 @@
 
                             {!! $title === 'Admin Inbox'
                                 ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        aria-hidden='true'></span>"
                                 : '' !!}
 
                         </li>
@@ -294,12 +289,12 @@
 
                 {!! $title === 'Admin Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.kategori') }}">
                     <i class="bi bi-box fs-5"></i>
                     <span class='ml-4'>Kategori</span>
                 </a>
@@ -308,12 +303,12 @@
 
                 {!! $title === 'Admin Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.sub-kategori') }}">
                     <i class="bi bi-box2 fs-5"></i>
                     <span class='ml-4'>Sub Kategori</span>
                 </a>
@@ -322,12 +317,12 @@
 
                 {!! $title === 'Admin Sub Sub Kategori'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Sub Sub Kategori'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/sub-sub-kategori">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.sub-sub-kategori') }}">
                     <i class="bi bi-boxes fs-5"></i>
                     <span class='ml-4'>Sub Sub Kategori</span>
                 </a>
@@ -336,24 +331,17 @@
 
                 {!! $title === 'Admin Pertanyaan'
                     ? "<span class='absolute inset-y-0 left-0 w-1 bg-blue-600 rounded-tr-lg rounded-br-lg'
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                aria-hidden='true'></span>"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    aria-hidden='true'></span>"
                     : '' !!}
 
                 <a class="{!! $title === 'Admin Pertanyaan'
                     ? 'inline-flex items-center w-full text-sm font-semibold text-gray-800 transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-100'
-                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="/admin/pertanyaan">
+                    : 'inline-flex items-center w-full text-sm font-semibold transition-colors duration-150 hover:text-gray-800 dark:hover:text-gray-200' !!}" href="{{ route('bot.pertanyaan') }}">
                     <i class="bi bi-lightbulb fs-5"></i>
                     <span class='ml-4'>Pertanyaan</span>
                 </a>
             </li>
         </ul>
-        <div class="px-6 mb-6">
-            <a href="/admin/logout"
-                class="flex items-center w-100 gap-3  w-full py-2 px-4 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg active:bg-blue-600 hover:bg-blue-500 focus:outline-none">
-                <i class="bi bi-box-arrow-left fs-5"></i>
-                Logout
-            </a>
-        </div>
     </div>
 </aside>
 

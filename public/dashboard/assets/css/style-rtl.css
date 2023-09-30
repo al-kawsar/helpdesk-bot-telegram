@@ -566,7 +566,7 @@ a,
   display: none;
   bottom: 7px;
   left: 7px;
-  z-index: 999;
+  z-index: 9;
 }
 
 .scroll-up a {
@@ -1182,7 +1182,7 @@ General Styles - Owlcarousel
   left: 0;
   right: 0;
   top: 0;
-  z-index: 9998;
+  z-index: 9;
 }
 
 .loader {
@@ -1198,7 +1198,7 @@ General Styles - Owlcarousel
   margin: -23px -23px 0 0;
   text-indent: -9999em;
   font-size: 10px;
-  z-index: 9999;
+  z-index: 9;
   -webkit-animation: load 0.8s infinite linear;
   -moz-animation: load 0.8s infinite linear;
   ms-animation: load 0.8s infinite linear;
@@ -1242,7 +1242,7 @@ General Styles - Owlcarousel
   background-color: rgba(10, 10, 10, 0.9);
   border: 0;
   border-radius: 0;
-  z-index: 1000;
+  z-index: 1;
   font-family: "Roboto Condensed", sans-serif;
   text-transform: uppercase;
   letter-spacing: 3px;

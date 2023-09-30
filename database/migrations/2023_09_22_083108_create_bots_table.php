@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('bots', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->text('key')->unique()->nullable(false);
             $table->string('id_bot');
-            $table->string('username');
-            $table->string('first_name');
-            $table->string('last_name');
+            $table->string('username')->unique()->nullable(false);
+            $table->string('first_name')->nullable(false);
+            $table->string('last_name')->nullable(true);
             $table->string('status')->nullable(false);
             $table->timestamps();
         });

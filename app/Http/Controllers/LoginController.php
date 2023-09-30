@@ -5,9 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use App\Models\User;
+use Illuminate\Support\Env;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -31,9 +32,22 @@ class LoginController extends Controller
             'password.required' => 'Password wajib diisi!',
         ]);
 
-        if (auth()->attempt($credentials)) {
+        $email = $request->get('email');
+        $password = $request->get('password');
+        $user = User::where('email', $email)->first();
+        if (!$user) {
+            return redirect()->back()->with('failed_message', 'Username dan password salah!');
+        }
+        $pass = explode('.', Crypt::decrypt($user->password));
+        if ($user && $pass[1] == $password) {
+            // Autentikasi berhasil
+            Auth::login($user);
             $request->session()->regenerate();
-            return redirect()->intended('/admin/dashboard');
+            $url = '/admin/' . $user->id . "/profile";
+            if (!$user->password_changed) {
+                return redirect()->intended($url)->withErrors(['password' => 'Anda wajib mengganti password', 'in-valid'])->withInput();
+            }
+            return redirect()->intended("/admin/dashboard");
         }
 
         return redirect()->back()->with('failed_message', 'Username dan password salah!');

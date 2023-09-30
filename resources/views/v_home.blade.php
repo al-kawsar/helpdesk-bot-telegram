@@ -37,7 +37,7 @@
     =============================================
 -->
 
-    <link rel="shortcut icon" href="{{ asset('/icon') }}/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('/img') }}/logounm.png" type="image/x-icon">
     <!-- Default stylesheets-->
     <link href="dashboard/assets/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Template specific stylesheets-->
@@ -69,7 +69,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand" href="/">
-                        <img src="icon/favicon.ico" alt="" style="display: block;width:30px">
+                        <img src="img/logounm.png" alt="" style="display: block;width:28px">
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="custom-collapse">
@@ -84,8 +84,9 @@
                             </li>
                         @else
                             <li>
-                                <a id="btn-login" class="section-scroll btn text-light p-1" style="background: #333;color:white"
-                                    aria-current="page" href="{{ route('bot.dashboard') }}">Dashboard Admin</a>
+                                <a id="btn-login" class="section-scroll btn text-light p-1"
+                                    style="background: #333;color:white" aria-current="page"
+                                    href="{{ route('bot.dashboard') }}">Dashboard Admin</a>
                             </li>
                         @endif
                     </ul>
@@ -99,7 +100,15 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <h2 class="module-title font-alt">Layanan Kami</h2>
+                            <h2 class="module-title font-alt">Layanan Kami
+                                @if (session()->has('error'))
+                                    {{ session()->get('error') }}
+                                @endif
+                                {{ $errors }}
+                                @error('error')
+                                    {{ $message }}
+                                @enderror
+                            </h2>
                             <div class="module-subtitle font-serif">Kami berkomitmen untuk menyediakan layanan yang
                                 unggul dan responsif kepada pengguna kami. Berikut adalah layanan utama yang kami
                                 tawarkan
@@ -273,9 +282,9 @@
         </script>
     </main>
     <!--
-    JavaScripts
-    =============================================
-    -->
+JavaScripts
+=============================================
+-->
     <script src="dashboard/assets/lib/jquery/dist/jquery.js"></script>
     <script src="dashboard/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="dashboard/assets/lib/wow/dist/wow.js"></script>

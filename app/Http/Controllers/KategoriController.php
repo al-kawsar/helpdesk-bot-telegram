@@ -29,10 +29,11 @@ class KategoriController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();
             }
         }
-
         // Jika semua validasi berhasil, lanjutkan untuk menyimpan data
         foreach ($kategoriData as $key => $kategori) {
-            Kategori::create(['kategori' => $kategori]);
+            Kategori::create([
+                'kategori' => $kategori,
+                ]);
         }
 
         session()->flash('success_message', "Kategori Berhasil Ditambahkan!!");

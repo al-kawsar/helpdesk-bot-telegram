@@ -23,7 +23,7 @@ function data() {
   let isPagesMenuOpen = false;
 
   // Memeriksa URL dan mengatur isPagesMenuOpen sesuai dengan kondisi
-  if (currentURL === "/admin/users" || currentURL === "/admin/grup") {
+  if (currentURL === "/admin/users" || currentURL === "/admin/grup" || currentURL === '/admin/settings') {
     isPagesMenuOpen = true;
   }
 

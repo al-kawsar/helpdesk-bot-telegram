@@ -1,7 +1,7 @@
 @extends('admin.layouts.va_main')
 
 @section('content')
-    <main class="h-full pb-16 overflow-y-auto" style="z-index: 10">
+    <main class="h-full pb-16 overflow-y-auto">
         <div class="container grid px-6 mx-auto">
             <div class="alert alert-info mt-6 fs-6 text-lowercase">
                 <i class="bi bi-info-circle"></i>

@@ -83,6 +83,9 @@
         @error('add-kategori')
             tampilkanModalValidasiError('modalKategori');
         @enderror
+        @error('email')
+            tampilkanModalValidasiError('modalAdmin');
+        @enderror
         @error('update-kategori')
             tampilkanModalValidasiError("modalEdit{{ $kategori->id }}");
         @enderror
@@ -119,6 +122,7 @@
 
     const successMessage = '{{ session('success_message') }}';
     const failedMessage = '{{ session('failed_message') }}';
+    const warningMessage = '{{ session('warning_message') }}';
     const title = '{{ session('title') }}';
 
     if (successMessage) {
@@ -141,6 +145,16 @@
             icon: 'error',
             confirmButtonText: "OK",
             confirmButtonColor: '#FF0000',
+            showConfirmButton: true
+        });
+    }
+
+    if(warningMessage){
+        Swal.fire({
+            title: title,
+            text: warningMessage,
+            icon: 'warning',
+            confirmButtonText: "OK",
             showConfirmButton: true
         });
     }

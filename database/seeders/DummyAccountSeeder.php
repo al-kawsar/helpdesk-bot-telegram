@@ -4,6 +4,9 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
+
 
 class DummyAccountSeeder extends Seeder
 {
@@ -13,9 +16,12 @@ class DummyAccountSeeder extends Seeder
     public function run(): void
     {
         User::create([
-            'name' => "kak sahirul",
-            'email' => "kakaril@gmail.com",
-            'password' => bcrypt('anjayhurinjay')
+            'id' => Str::uuid(),
+            'name' => "sahirul",
+            'email' => "sahirul@gmail.com",
+            'password' => Crypt::encrypt($_ENV['PASSWORD_SALT'] . '.123.' . $_ENV['PASSWORD_SALT']),
+            'password_changed' => '1',
+            'role_id' => '1'
         ]);
     }
 }

@@ -4,10 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class isAdminLogin
+class SuperadminMiddleware
 {
     /**
      * Handle an incoming request.
@@ -16,9 +15,10 @@ class isAdminLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
-            return redirect()->route('bot.dashboard');
+        if ($request->user() && $request->user()->role_id === "1") {
+            return $next($request);
         }
-        return $next($request);
+        // Jika bukan superadmin, Anda bisa mengarahkan pengguna atau melakukan tindakan lainnya
+    return redirect()->back()->with('warning_message','Anda tidak punya akses');
     }
 }

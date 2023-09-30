@@ -14,4 +14,14 @@ class User extends Authenticatable
 
     protected $guarded = ['id'];
     protected $table = 'users';
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
 }
