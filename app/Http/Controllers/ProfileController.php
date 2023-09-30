@@ -25,16 +25,34 @@ class ProfileController extends Controller
             'password.required' => 'Password wajib diisi!',
         ]);
 
-        $password = $_ENV['PASSWORD_SALT'] . ".{$request->get('password')}." . $_ENV['PASSWORD_SALT'];
+        $password = $request->get('password');
+
+
+        $u_pass = Crypt::decrypt($user->password);
+        $u_pass = explode('.', $u_pass)[1];
+        $status_pass = $user->password_changed;
+        $ps = !$status_pass && $u_pass == $password ? '0' : '1';
+
+        $url = "/admin/{$user->id}/profile";
+
+        if (!$status_pass && $ps === '0') {
+            return redirect($url)->with([
+                'warning_message' => 'Anda Belum Mengganti Password!',
+                'in-valid' => true
+            ]);
+        }
+
+        $password = $_ENV['PASSWORD_SALT'] . ".{$password}." . $_ENV['PASSWORD_SALT'];
+
 
         $user = User::find($user->id);
         $user->name = $credentials['name'];
         $user->email = $credentials['email'];
         $user->password = Crypt::encrypt($password);
-        $user->password_changed = true;
+        $user->password_changed = $ps;
         $user->save();
 
-    return redirect("/admin/{$user->id}/profile")->with([
+        return redirect("/admin/{$user->id}/profile")->with([
             'success_message' => "Profile Berhasil Diubah",
             'title' => 'Berhasil!'
         ]);

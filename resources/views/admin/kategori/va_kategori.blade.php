@@ -84,12 +84,14 @@
                             @if (request('search') && $kategoris->isEmpty())
                                 <tr>
                                     <td colspan="4" class="text-center fs-1 py-5 fw-bold">Pencarian <span
-                                            class="text-danger">{{ request()->get('search') }}</span> tidak ditemukan... <p>🙏</p>
+                                            class="text-danger">{{ request()->get('search') }}</span> tidak ditemukan... <p>
+                                            🙏</p>
                                     </td>
                                 </tr>
                             @elseif($kategoris->isEmpty())
                                 <tr>
-                                    <td colspan="4" class="text-center fs-1 py-5 fw-bold">Kategori <span class="text-danger">Kosong</span>...😴</td>
+                                    <td colspan="4" class="text-center fs-1 py-5 fw-bold">Kategori <span
+                                            class="text-danger">Kosong</span>...😴</td>
                                 </tr>
                             @else
                                 @foreach ($kategoris as $number => $kategori)
@@ -98,7 +100,7 @@
                                             {{ $number + $kategoris->firstItem() }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ $kategori->kategori }}
+                                            {{ substr($kategori->kategori, 0, 50) . '...' }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
                                             {{ $kategori->created_at->format('d M Y | H:i') }}
@@ -144,10 +146,9 @@
                                                                         <span class="text-gray-700 dark:text-gray-400">Nama
                                                                             kategori <span
                                                                                 class="text-danger">*</span></span>
-                                                                        <input
+                                                                        <textarea
                                                                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                                                                            name="update-kategori"
-                                                                            value="{{ $kategori->kategori }}" autofocus>
+                                                                            name="update-kategori"  autofocus>{{ $kategori->kategori }}</textarea>
                                                                     </label>
 
                                                                 </div>

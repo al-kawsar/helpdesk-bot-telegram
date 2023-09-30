@@ -34,7 +34,12 @@ Route::prefix('admin')->group(function () {
 
     Route::get('logout', [LoginController::class, 'logout'])->name('auth.logout');
 
+    Route::get('{user:id}/profile', [AdminBotController::class, 'profilePage'])->name('bot.email');
+    Route::put('{user:id}/profile', [ProfileController::class, 'updateProfile']);
+
+
     Route::middleware('auth.login')->group(function () {
+
         Route::get('dashboard', [AdminBotController::class, 'dashboard'])->name('bot.dashboard');
         Route::get('kategori', [AdminBotController::class, 'kategori'])->name('bot.kategori');
 
@@ -58,11 +63,7 @@ Route::prefix('admin')->group(function () {
 
         Route::post('pertanyaan', [PertanyaanController::class, 'store']);
         Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
-        Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
-
-        Route::get('{user:id}/profile', [AdminBotController::class, 'profilePage'])->name('bot.email');
-        Route::put('{user:id}/profile', [ProfileController::class, 'updateProfile']);
-
+        Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);    
 
         Route::middleware(['auth', 'superadmin'])->group(function () {
             Route::get('admins', [AdminBotController::class, 'admins'])->name('bot.admins');
