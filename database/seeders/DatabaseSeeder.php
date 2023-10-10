@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        $totalRecords = 100;
-        $batchSize = 50; // Adjust the batch size as needed
+        $totalRecords = 1_000_000;
+        $batchSize = 500; // Adjust the batch size as needed
 
         $kategoriChunks = ceil($totalRecords / $batchSize);
 

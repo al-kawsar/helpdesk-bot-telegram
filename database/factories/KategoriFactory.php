@@ -17,7 +17,8 @@ class KategoriFactory extends Factory
     public function definition(): array
     {
         return [
-            'kategori' => $this->faker->unique()->userName()
+            'kategori' => $this->faker->name(),
+            'id_grup' => 'private'
         ];
     }
 }

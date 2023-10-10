@@ -26,18 +26,19 @@ class ProfileController extends Controller
         ]);
 
         $password = $request->get('password');
+        $password_repl = preg_replace('/\s+/', '', $password);
 
-
-        $u_pass = Crypt::decrypt($user->password);
-        $u_pass = explode('.', $u_pass)[1];
+        $db_pass = Crypt::decrypt($user->password);
+        $db_pass = explode('.', $db_pass)[1];
         $status_pass = $user->password_changed;
-        $ps = !$status_pass && $u_pass == $password ? '0' : '1';
+        $ps = !$status_pass && $db_pass == $password_repl ? '0' : '1';
 
         $url = "/admin/{$user->id}/profile";
 
         if (!$status_pass && $ps === '0') {
             return redirect($url)->with([
                 'warning_message' => 'Anda Belum Mengganti Password!',
+                'title' => "Peringatan",
                 'in-valid' => true
             ]);
         }

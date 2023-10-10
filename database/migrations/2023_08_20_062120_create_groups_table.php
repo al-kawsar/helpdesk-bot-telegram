@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id();
-            $table->string('id_grup',50)->unique();
-            $table->string('nama_grup');
-            $table->string('username')->nullable(true);
+            $table->string('id_grup', 50)->unique();
+            $table->text('nama_grup');
+            $table->text('username')->nullable(true);
             $table->string('tipe_grup');
+            $table->string('bot_id');
             $table->timestamps();
         });
     }

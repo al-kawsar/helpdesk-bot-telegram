@@ -17,8 +17,8 @@ class DummyAccountSeeder extends Seeder
     {
         User::create([
             'id' => Str::uuid(),
-            'name' => "sahirul",
-            'email' => "sahirul@gmail.com",
+            'name' => "ict helpdesk",
+            'email' => "helpdeskict@ict.com",
             'password' => Crypt::encrypt($_ENV['PASSWORD_SALT'] . '.123.' . $_ENV['PASSWORD_SALT']),
             'password_changed' => '1',
             'role_id' => '1'

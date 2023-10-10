@@ -45,7 +45,11 @@ class LoginController extends Controller
             $request->session()->regenerate();
             $url = '/admin/' . $user->id . "/profile";
             if (!$user->password_changed) {
-                return redirect()->intended($url)->withErrors(['password' => 'Anda wajib mengganti password', 'in-valid'])->withInput();
+                session()->flash('info_message','Anda wajib mengganti password!');
+                session()->flash('title','Infromasi');
+                return redirect()->intended($url)->withErrors([
+                    'password' => 'Anda wajib mengganti password', 
+                    ])->withInput();
             }
             return redirect()->intended("/admin/dashboard");
         }

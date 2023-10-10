@@ -46,15 +46,41 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
     <link href="dashboard/assets/lib/animate.css/animate.css" rel="stylesheet">
     <link href="dashboard/assets/lib/components-font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/et-line-font/et-line-font.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/flexslider/flexslider.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/owl.carousel/dist/dashboard/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/owl.carousel/dist/dashboard/assets/owl.theme.default.min.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/magnific-popup/dist/magnific-popup.css" rel="stylesheet">
-    <link href="dashboard/assets/lib/simple-text-rotator/simpletextrotator.css" rel="stylesheet">
     <!-- Main stylesheet and color file-->
-    <link href="dashboard/assets/css/style.css" rel="stylesheet">
+    {{-- <link href="assetsdashboard/assets/css/style.css" rel="stylesheet"> --}}
+    <link href="{{ asset('dashboard/assets/css/style.css') }}" rel="stylesheet">
     <link id="color-scheme" href="dashboard/assets/css/colors/default.css" rel="stylesheet">
+    <style>
+        .head-question {
+            width: max-content;
+            padding-inline: 1rem;
+            border-bottom: 1px solid black;
+        }
+
+
+        .list-question {
+            list-style: none;
+            font-size: 24px;
+            width: max-content;
+            margin-bottom: 1rem;
+        }
+
+        .list-question::before {
+            content: "";
+        }
+
+        @media screen and (max-width: 576px) {
+            .head-question {
+                font-size: 20px;
+            }
+
+            .list-question {
+                font-size: 16px;
+                margin-bottom: 1rem;
+                padding-left: 0;
+            }
+        }
+    </style>
 </head>
 
 <body data-spy="scroll" data-target=".onpage-navigation" data-offset="60">
@@ -100,15 +126,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <h2 class="module-title font-alt">Layanan Kami
-                                @if (session()->has('error'))
-                                    {{ session()->get('error') }}
-                                @endif
-                                {{ $errors }}
-                                @error('error')
-                                    {{ $message }}
-                                @enderror
-                            </h2>
+                            <h2 class="module-title font-alt">Layanan Kami</h2>
                             <div class="module-subtitle font-serif">Kami berkomitmen untuk menyediakan layanan yang
                                 unggul dan responsif kepada pengguna kami. Berikut adalah layanan utama yang kami
                                 tawarkan
@@ -229,6 +247,19 @@
                 </div>
             </section>
             <hr class="divider-w">
+            @if (!empty($lists[0]))
+                <section id="pertanyaan_terbanyak">
+                    <center>
+                        <h1 class="head-question" style="color: black;">Paling Sering Ditanyakan</h1>
+                        <ol>
+                            @foreach ($lists as $list)
+                                <li class="list-question" style="color:black;">{{ $list->pertanyaan }}</li>
+                            @endforeach
+                        </ol>
+                    </center>
+                </section>
+                <hr class="divider-w">
+            @endif
             <section class="module" id="contact">
                 <div class="container">
                     <div class="row">
@@ -240,22 +271,21 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <form id="contactForm" role="form" method="post" action="/userQuestion">
+                            <form role="form" method="post" action="/userQuestion">
                                 <div class="form-group">
                                     <label class="sr-only" for="name">Nama</label>
-                                    <input class="form-control" type="text" id="name" name="name"
+                                    <input class="form-control" type="text" name="name"
                                         placeholder="Masukkan nama anda*" required="required"
                                         data-validation-required-message="Masukkan nama anda." />
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="7" id="message" name="message" placeholder="Pertanyaan anda."
-                                        required="required" data-validation-required-message="Please enter your message."></textarea>
+                                    <textarea class="form-control" rows="7" name="message" placeholder="Pertanyaan anda." required="required"
+                                        data-validation-required-message="Please enter your message."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-block btn-round btn-d" id="cfsubmit"
-                                        type="submit">Submit</button>
+                                    <button class="btn btn-block btn-round btn-d" type="submit">Submit</button>
                                 </div>
                             </form>
                             <div class="ajax-response font-alt" id="contactFormResponse"></div>
@@ -278,8 +308,6 @@
         </div>
         <div class="scroll-up"><a href="#totop" style="background: yellow"><i
                     class="fa fa-angle-double-up"></i></a></div>
-        <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDK2Axt8xiFYMBMDwwG1XzBQvEbYpzCvFU">
-        </script>
     </main>
     <!--
 JavaScripts
@@ -287,19 +315,6 @@ JavaScripts
 -->
     <script src="dashboard/assets/lib/jquery/dist/jquery.js"></script>
     <script src="dashboard/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="dashboard/assets/lib/wow/dist/wow.js"></script>
-    <script src="dashboard/assets/lib/jquery.mb.ytplayer/dist/jquery.mb.YTPlayer.js"></script>
-    <script src="dashboard/assets/lib/isotope/dist/isotope.pkgd.js"></script>
-    <script src="dashboard/assets/lib/imagesloaded/imagesloaded.pkgd.js"></script>
-    <script src="dashboard/assets/lib/flexslider/jquery.flexslider.js"></script>
-    <script src="dashboard/assets/lib/owl.carousel/dist/owl.carousel.min.js"></script>
-    <script src="dashboard/assets/lib/smoothscroll.js"></script>
-    <script src="dashboard/assets/lib/magnific-popup/dist/jquery.magnific-popup.js"></script>
-    <script src="dashboard/assets/lib/simple-text-rotator/jquery.simple-text-rotator.min.js"></script>
-    <script async="" defer="" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDK2Axt8xiFYMBMDwwG1XzBQvEbYpzCvFU">
-    </script>
-    <script src="dashboard/assets/js/plugins.js"></script>
-    <script src="dashboard/assets/js/main.js"></script>
 </body>
 
 </html>

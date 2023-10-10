@@ -11,7 +11,7 @@
         </button>
         <!-- Search input -->
 
-        @if (Request::path() != 'admin/dashboard' )
+        @if (Request::path() != 'admin/dashboard')
             <form action="{{ request()->fullUrl() }}" method="get" class="flex justify-center items-center flex-1">
                 <div class="relative w-full max-w-xl mr-6 focus-within:text-purple-500">
                     <input
@@ -29,52 +29,45 @@
                 </a>
             </form>
         @endif
+        <button class="d-flex gap-2 align-items-center shadow-md rounded px-2 ms-auto " type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+            <i class="bi bi-person-circle fs-2"></i>
+            <p class="text-uppercase">{{ auth()->user()->name }}</p>
+        </button>
 
-        <button class="ms-auto" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-            aria-controls="offcanvasRight"><i class="bi bi-person-circle fs-2"></i></button>
-
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h5 class="offcanvas-title d-flex gap-3" id="offcanvasRightLabel">
-                    <i class="bi bi-person-circle fs-2"></i>
-                    <div class="info-user">
-                        <p>{{ auth()->user()->email }}</p>
-                        <div class="badge bg-info">{{ auth()->user()->role_id === '1' ? 'Superadmin' : 'Admin' }}</div>
-                    </div>
-                </h5>
-                <button type="button" class="btn-close bg-secondary text-white" data-bs-dismiss="offcanvas"
-                    aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-                <ul>
-                    <hr>
-                    <li class="nav-items prof-h rounded px-3 py-1 my-1">
-                        <a href="/admin/{{ auth()->user()->id }}/profile" class="gap-2 nav-link d-flex align-items-center">
-                            <div class="icon">
-                                <i class="bi bi-person fs-5"></i>
-                            </div> <span class="fs-6">Your Profile</span>
-                        </a>
-                    </li>
-                    <hr>
-                    @if (auth()->user()->role_id === "1")
-                    <li class="nav-items prof-h rounded px-3 py-1 my-3">
-                        <a href="/admin/settings" class="gap-2 nav-link d-flex align-items-center">
-                            <div class="icon">
-                                <i class="bi bi-gear fs-5"></i>
-                            </div> <span class="fs-6">Settings</span>
-                        </a>
-                    </li>
-                    @endif
-                    <li class="nav-items prof-h rounded px-3 py-1 my-3">
-                        <a href="/admin/logout" class="gap-2 nav-link d-flex align-items-center">
-                            <div class="icon">
-                                <i class="bi bi-box-arrow-right fs-5"></i>
-                            </div> <span class="fs-6">Logout</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title d-flex gap-3" id="offcanvasRightLabel">
+                <i class="bi bi-person-circle fs-2"></i>
+                <div class="info-user">
+                    <p>{{ auth()->user()->email }}</p>
+                    <div class="badge bg-info">{{ auth()->user()->role_id === '1' ? 'Superadmin' : 'Admin' }}</div>
+                </div>
+            </h5>
+            <button type="button" class="btn-close bg-secondary text-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
         </div>
+        <div class="offcanvas-body">
+            <ul>
+                <hr>
+                <li class="nav-items prof-h rounded px-3 py-1 my-1">
+                    <a href="/admin/{{ auth()->user()->id }}/profile" class="gap-2 nav-link d-flex align-items-center">
+                        <div class="icon">
+                            <i class="bi bi-person fs-5"></i>
+                        </div> <span class="fs-6">Your Profile</span>
+                    </a>
+                </li>
+                <hr>
+                <li class="nav-items prof-h rounded px-3 py-1 my-3">
+                    <a href="/admin/logout" class="gap-2 nav-link d-flex align-items-center">
+                        <div class="icon">
+                            <i class="bi bi-box-arrow-right fs-5"></i>
+                        </div> <span class="fs-6">Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     </div>
 </header>

@@ -12,4 +12,14 @@ class Group extends Model
     protected $guarded = [
         'id'
     ];
+
+    public function kategori()
+    {
+        return $this->hasMany(Kategori::class);
+    }
+
+    public function bot()
+    {
+        return $this->hasMany(Bot::class, 'id');
+    }
 }

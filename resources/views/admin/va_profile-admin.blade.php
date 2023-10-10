@@ -38,9 +38,12 @@
                     </div>
                 @enderror
             </div>
-            <div class="mb-3">
+            <div class="mb-3 position-relative">
+                <button onclick="myFunction()" class="position-absolute right-0 top-0 btn btn-primary"
+                type="button" id="btnPass" style="transform: translateY(32px)"><i class="bi bi-eye-fill"></i></button>
                 <label class="form-label">Password</label>
-                <input type="text" class="form-control @if(session()->has('in-valid')) is-invalid @endif" name="password" placeholder=""
+                <input type="password" class="form-control @if (session()->has('in-valid')) is-invalid @endif"
+                    name="password" placeholder="" id="inputPass"
                     value="@php
 try {
                     $decrypted = Crypt::decrypt($user->password);
@@ -58,9 +61,25 @@ try {
                         {{ $message }}
                     </div>
                 @enderror
+
             </div>
             <button type="submit" class="btn btn-success">Perbarui Profile</button>
         </form>
 
     </div>
+@endsection
+@section('script')
+    <script>
+        function myFunction() {
+            var x = document.getElementById("inputPass");
+            var y = document.getElementById("btnPass");
+            if (x.type === "password") {
+                x.type = "text";
+                y.innerHTML = "<i class='bi bi-eye-slash-fill'></i>";
+            } else {
+                x.type = "password";
+                y.innerHTML = "<i class='bi bi-eye-fill'></i>";
+            }
+        }
+    </script>
 @endsection

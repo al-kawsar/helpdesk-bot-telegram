@@ -35,3 +35,13 @@ public function getUpdates()
             return redirect()->back();
         }
     }
+
+
+
+    // if ($statusCode == 403 || $statusCode == 400) {
+                //     Group::where('id_grup', $grup)->delete();
+                //     return redirect()->route('bot.grup')->with([
+                //         'failed_message' => "Bot {$bot['username']} Tidak Ada Di Grup! {$grup['nama_grup']},Kemungkinan Admin Mengganti Bot",
+                //         'title' => "Gagal"
+                //     ]);
+                // }

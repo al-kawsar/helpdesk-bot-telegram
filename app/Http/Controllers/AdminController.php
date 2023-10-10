@@ -16,13 +16,14 @@ class AdminController extends Controller
         $credential = Validator::make(
             $request->all(),
             [
-                'email' => 'required|email|max:255|min:15|unique:users|regex:/(.+)@(.+)\.(.+)/i'
+                'email' => "required|email|max:255|min:13|unique:users|email:rfc,dns",
             ],
             [
                 'email.required' => 'Email wajib diisi!',
                 'email.email' => 'Email tidak valid!',
                 'email.max' => 'Email maksimal 255 karakter',
-                'email.unique' => 'Email sudah digunakan, coba yang lain!'
+                'email.unique' => 'Email sudah digunakan, coba yang lain!',
+                'email.regex' => 'Email tidak valid'
             ]
         );
 
@@ -38,8 +39,8 @@ class AdminController extends Controller
 
         $admin = new User();
         $admin->id = Str::uuid();
-        $admin->name = $name;
-        $admin->email = $email;
+        $admin->name = !empty($name) ? $name : $password;
+        $admin->email = strtolower($email);
         $admin->password = Crypt::encrypt($_ENV['PASSWORD_SALT'] . '.' . $password . '.' . $_ENV['PASSWORD_SALT']);
         $admin->role_id = "0";
         $admin->save();
@@ -49,12 +50,20 @@ class AdminController extends Controller
 
     public function updateAdmin(Request $request, User $user)
     {
-
-
         $credential = Validator::make(
             $request->all(),
-            ['email' => 'min:15|max:255|email:rfc,dns|required|regex:/(.+)@(.+)\.(.+)/i', 'name' => 'required|max:255'],
-            ['name.required' => "Nama wajib di isi!", 'name.max' => 'nama maksimal 255 karakter', 'email.required' => "Email wajib di isi!", 'email.email' => "Email tidak valid", 'email.max' => "Email maksimal 255 karakter", 'email.unique' => 'Email sudah digunakan, coba yang lain!']
+            [
+                'email' => $request->email == $user->email ? 'required|max:255|email|email:rfc,dns' : 'unique:users|max:255|required|email|email:rfc,dns',
+                'name' => 'required|max:255'
+            ],
+            [
+                'name.required' => "Nama wajib di isi!",
+                'name.max' => 'nama maksimal 255 karakter',
+                'email.required' => "Email wajib di isi!",
+                'email.email' => "Email tidak valid",
+                'email.max' => "Email maksimal 255 karakter",
+                'email.unique' => 'Email sudah digunakan, coba yang lain!'
+            ]
         );
 
         if ($credential->fails()) {
@@ -81,5 +90,25 @@ class AdminController extends Controller
     {
         User::destroy($user->id);
         return redirect('admin/admins')->with(['success_message' => "Admin {$user->name} telah dihapus", 'title' => "Berhasil"]);
+    }
+
+    public function deleteAll(Request $request)
+    {
+        $ids = $request->ids;
+        $status = User::whereIn('id', $ids)->delete();
+
+        if (!$status) {
+            return response()->json([
+                'error' => 'true',
+                'message' => "Admin Gagal Dihapus"
+            ]);
+        }
+
+        return response()->json(
+            [
+                'success' =>  true,
+                'message' => "Admin Berhasil Dihapus"
+            ]
+        );
     }
 }

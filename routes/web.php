@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminBotController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
@@ -12,6 +13,8 @@ use App\Http\Controllers\SubKategoriController;
 use App\Http\Controllers\SubSubKategoriController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TelegramBotController;
+use App\Http\Controllers\WebhookConfigurationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -40,11 +43,15 @@ Route::prefix('admin')->group(function () {
 
     Route::middleware('auth.login')->group(function () {
 
+        Route::post('bot', [TelegramBotController::class, 'botAction'])->name('bot.grup.sendmessage');
+        Route::redirect('bot','/admin/grup');
+
         Route::get('dashboard', [AdminBotController::class, 'dashboard'])->name('bot.dashboard');
         Route::get('kategori', [AdminBotController::class, 'kategori'])->name('bot.kategori');
 
         Route::get('users', [AdminBotController::class, 'user'])->name('bot.user');
         Route::get('grup', [AdminBotController::class, 'grup'])->name('bot.grup');
+
         Route::get('sub-kategori', [AdminBotController::class, 'subKategori'])->name('bot.sub-kategori');
         Route::get('sub-sub-kategori', [AdminBotController::class, 'subSubKategori'])->name('bot.sub-sub-kategori');
         Route::get('pertanyaan', [AdminBotController::class, 'pertanyaan'])->name('bot.pertanyaan');
@@ -52,6 +59,7 @@ Route::prefix('admin')->group(function () {
         Route::post('kategori', [KategoriController::class, 'store']);
         Route::post('edit-kategori/{kategori:kategori}', [KategoriController::class, 'update']);
         Route::get('hapus-kategori/{kategori:id}', [KategoriController::class, 'delete'])->name('delete');
+        Route::delete('kategori', [KategoriController::class, 'deleteAll'])->name('bot.kategori.selected');
 
         Route::post('sub-kategori', [SubKategoriController::class, 'store']);
         Route::post('edit-sub-kategori/{subkategori:sub_kategori}', [SubKategoriController::class, 'update']);
@@ -63,10 +71,24 @@ Route::prefix('admin')->group(function () {
 
         Route::post('pertanyaan', [PertanyaanController::class, 'store']);
         Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
-        Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);    
+        Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
+
 
         Route::middleware(['auth', 'superadmin'])->group(function () {
+
+            Route::get('bot-settings', [AdminBotController::class, 'botSettings'])->name('bot.botsettings');
+            Route::post('bot-settings', [BotController::class, 'addBot'])->name('bot.botsettings.add');
+            Route::put('bot-settings/{bot:id}', [BotController::class, 'updateBot'])->name('bot.botsettings.update');
+            Route::delete('bot-settings', [BotController::class, 'deleteAll'])->name('bot.botsettings.selected');
+            Route::get('hapus-bot/{bot:id}', [BotController::class, 'destroyBot']);
+
+            Route::post('webhook-settings/{bot:id}', [BotController::class, 'setWebhook'])->name('bot.webhooksettings');
+            Route::delete('webhook-settings/{bot:id}', [BotController::class, 'deleteWebhook'])->name('bot.webhooksettings.delete');
+
+
+
             Route::get('admins', [AdminBotController::class, 'admins'])->name('bot.admins');
+            Route::delete('admins', [AdminController::class, 'deleteAll'])->name('bot.admins.selected');
             Route::post('admins', [AdminController::class, 'createAdmin']);
             Route::put('admins/{user:id}', [AdminController::class, 'updateAdmin']);
             Route::get('hapus-admin/{user:id}', [AdminController::class, 'deleteAdmin']);
@@ -77,18 +99,6 @@ Route::prefix('admin')->group(function () {
 
 // Bot Handler Action
 
-Route::post('bot', [TelegramBotController::class, 'botAction']);
-Route::get('bot', [TelegramBotController::class, 'botInfo']);
-// Route::redirect('/webhook', '/');
 
-
+// Route::post($_ENV['ACCESS_WEBHOOK'] . '/webhook', [TelegramBotController::class, 'handleBot']);
 Route::post('/webhook', [TelegramBotController::class, 'handleBot']);
-// Route::post('{keypassword}/reset-password', ResetPasswordController::class, 'reset');
-
-// Route::middleware(['first.time.login'])->group(function () {
-//     Route::get('/admin/dashboard', [AdminBotController::class, 'dashboard'])->name('bot.dashboard');
-//     Route::get('/admin/users', [AdminBotController::class, 'user'])->name('bot.user');
-//     Route::get('/admin/grup', [AdminBotController::class, 'grup'])->name('bot.grup');
-
-
-// });

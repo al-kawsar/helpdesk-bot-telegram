@@ -8,11 +8,11 @@
         <div class="flex flex-col flex-1 w-full">
 
             @include('admin.partials.va_navbar')
-
             @yield('content')
         </div>
     </div>
 
 
     @include('partials.v_footer')
+    @yield('script')
 @endauth

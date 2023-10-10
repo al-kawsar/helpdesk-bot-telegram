@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('pertanyaans', function (Blueprint $table) {
             $table->id();
-            $table->string('pertanyaan');
-            $table->string('jawaban');
+            $table->text('pertanyaan');
+            $table->text('jawaban');
             $table->foreignId('sub_sub_kategori_id')->constrained('sub_sub_kategoris')->onDelete('cascade');
+            $table->string('total_pertanyaan')->nullable();
             $table->timestamps();
         });
     }

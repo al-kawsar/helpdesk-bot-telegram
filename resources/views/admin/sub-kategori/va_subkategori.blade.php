@@ -46,7 +46,7 @@
                                             name="tambah_sub-kategori" required />
                                     </label>
                                     {{-- Display placeholder for alerts --}}
-                                    <div id="tambahKolomKategori"></div>
+                                    <div id="tambahKolom"></div>
 
                                     <button type="button" class="btn btn-secondary my-3" id="liveAlertBtn">Tambah
                                         Kolom</button>
@@ -58,8 +58,8 @@
                                             </span>
                                             <select name="option"
                                                 @foreach ($kategori as $item)
-                                                    class="block p-2 rounded mt-1 border text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
-                                                    <option value="{{ $item->id }}">{{ $item->kategori }}</option> @endforeach
+                                                    class="w-full p-2 rounded mt-1 border text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray">
+                                                    <option class="w-full" value="{{ $item->id }}">{{ $item->kategori }}</option> @endforeach
                                                 </select>
                                         </label>
                                     @else

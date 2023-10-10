@@ -42,7 +42,13 @@
 
     <script>
         function goBack() {
-            window.location.href = '/';
+            const user = {{ auth()->check() ? 'true' : 'false' }};
+
+            if (user) {
+                window.location.href = '/admin/dashboard';
+            } else {
+                window.location.href = '/';
+            }
         }
     </script>
 

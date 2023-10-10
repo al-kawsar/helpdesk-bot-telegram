@@ -24,7 +24,6 @@ html {
 /* Sidebar End */
 
 
-
 /* Admin Kategori */
 
 .tambah-kategori {
@@ -62,6 +61,7 @@ html {
     transform: translate(-50%, -50%);
     box-shadow: 0 0 0px 1px #FF0000;
     color: #FF0000;
+    background-color: white !important;
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
     -ms-transform: translate(-50%, -50%);
@@ -155,13 +155,20 @@ html {
 /* Profile */
 
 .prof-h {
-    transition: all .1s  ease-in-out;
-    -webkit-transition: all .1s  ease-in-out;
-    -moz-transition: all .1s  ease-in-out;
-    -ms-transition: all .1s  ease-in-out;
-    -o-transition: all .1s  ease-in-out;
+    transition: all .1s ease-in-out;
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
+    -ms-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
 }
 
 .prof-h:hover {
     background-color: rgba(191, 191, 255, 0.627);
+}
+
+@media screen and (max-width: 425px) {
+    #deleteAllSelected{
+        color: yellow !important;
+    }
+
 }

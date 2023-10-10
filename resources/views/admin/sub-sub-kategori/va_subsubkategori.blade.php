@@ -45,7 +45,7 @@
                                             name="tambah_subsub-kategori" required />
                                     </label>
                                     {{-- Display placeholder for alerts --}}
-                                    <div id="tambahKolomKategori"></div>
+                                    <div id="tambahKolom"></div>
 
                                     <button type="button" class="btn btn-secondary my-3" id="liveAlertBtn">Tambah
                                         Kolom</button>

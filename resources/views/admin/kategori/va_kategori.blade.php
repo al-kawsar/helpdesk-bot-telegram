@@ -1,5 +1,6 @@
 @extends('admin.layouts.va_main')
 
+
 @section('content')
     <main class="h-full pb-16 overflow-y-auto">
         <div class="container grid px-6 mx-auto">
@@ -13,15 +14,20 @@
                 </div>
             @endif
 
-            <button class="btn btn-primary my-2 tambah-kategori ms-auto" type="button" data-bs-toggle="modal"
-                data-bs-target="#modalKategori">Tambah
-                {{ $teks }}</button>
+
+            <div class="d-flex my-2">
+                <button class="btn btn-danger me-auto" type="button" id="deleteAllSelected">Delete All Selected</button>
+                <button class="btn btn-primary tambah-kategori ms-auto" type="button" data-bs-toggle="modal"
+                    data-bs-target="#modalKategori">Tambah
+                    {{ $teks }}</button>
+            </div>
+
 
             <!-- Modal Tambah Kategori-->
-            <div class="modal fade" id="modalKategori" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog">
+            <div class="modal fade" id="modalKategori" tabindex="1" aria-hidden="true">
+                <div class="modal-dialog" id="">
                     <form action="/admin/kategori" method="post">
-                        <div class="modal-content">
+                        <div class="modal-content" id="lol">
                             <div class="modal-header">
                                 <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
                                     id="exampleModalLabel">Modal
@@ -49,11 +55,33 @@
                                     </label>
 
                                     {{-- Display placeholder for alerts --}}
-                                    <div id="tambahKolomKategori"></div>
+                                    <div id="tambahKolom"></div>
 
                                     {{-- Button to add a new input field --}}
                                     <button type="button" class="btn btn-secondary my-3 ms-auto position-relative"
                                         id="liveAlertBtn"><i class="bi bi-plus-square"></i></button>
+
+
+                                    <label class="block text-sm my-3">
+                                        <span class="mb-2 text-gray-700 dark:text-gray-400 d-block">Pilih Grup Untuk
+                                            Kategori
+                                            <span class="text-danger">*</span>
+                                        </span>
+                                        <select name="option" id="select_box"
+                                            class=" w-full p-2 rounded mt-1 border text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray select2-tailwind"
+                                            data-bs-toggle="select2">
+                                            <option value="private">Pengguna</option>
+                                            @foreach ($grups as $item)
+                                                <option class="w-full" value="{{ $item->id_grup }}">
+                                                    {{ $item->nama_grup }}</option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+                                    @if (!isset($grups[0]) && empty($grups[0]))
+                                        <button type="button" class="d-block btn btn-secondary text-light">Grup belum
+                                            ada</button>
+                                    @endif
+
 
                                 </div>
                             </div>
@@ -74,36 +102,42 @@
                         <thead>
                             <tr
                                 class="text-xs font-semibold tracking-wide text-left text-gray-500 uppercase border-b dark:border-gray-700 bg-gray-50 dark:text-gray-400 dark:bg-gray-800">
+                                <th class="px-4 py-3 text-center"><input type="checkbox" name="" id="select_all_ids"
+                                        class="p-2 form-check-input"></th>
                                 <th class="px-4 py-3">#</th>
                                 <th class="px-4 py-3">Kategori</th>
-                                <th class="px-4 py-3">Tanggal Ditambahkan</th>
+                                <th class="px-4 py-3">Dari Grup/Pengguna</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y dark:divide-gray-700 dark:bg-gray-800">
                             @if (request('search') && $kategoris->isEmpty())
                                 <tr>
-                                    <td colspan="4" class="text-center fs-1 py-5 fw-bold">Pencarian <span
+                                    <td colspan="5" class="text-center fs-1 py-5 fw-bold">Pencarian <span
                                             class="text-danger">{{ request()->get('search') }}</span> tidak ditemukan... <p>
                                             🙏</p>
                                     </td>
                                 </tr>
                             @elseif($kategoris->isEmpty())
                                 <tr>
-                                    <td colspan="4" class="text-center fs-1 py-5 fw-bold">Kategori <span
+                                    <td colspan="5" class="text-center fs-1 py-5 fw-bold">Kategori <span
                                             class="text-danger">Kosong</span>...😴</td>
                                 </tr>
                             @else
                                 @foreach ($kategoris as $number => $kategori)
-                                    <tr class="text-gray-700 dark:text-gray-400">
+                                    <tr class="text-gray-700 dark:text-gray-400" id="kategori_ids{{ $kategori->id }}">
+                                        <td class="py-3 text-center">
+                                            <input type="checkbox" name="ids" class="checkbox_ids form-check-input p-2"
+                                                id="" value="{{ $kategori->id }}">
+                                        </td>
                                         <td class="px-4 py-3">
                                             {{ $number + $kategoris->firstItem() }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ substr($kategori->kategori, 0, 50) . '...' }}
+                                            {{ Str::length($kategori->kategori) > 50 ? substr($kategori->kategori, 0, 50) . '...' : $kategori->kategori }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
-                                            {{ $kategori->created_at->format('d M Y | H:i') }}
+                                            {{ $kategori->grup->nama_grup ?? 'Pribadi' }}
                                         </td>
                                         <td class="px-4 py-3">
                                             <div class="flex items-center space-x-4 text-sm">
@@ -132,7 +166,8 @@
                                                                     <h1 class="modal-title text-2xl font-semibold text-gray-700 dark:text-gray-200"
                                                                         id="exampleModalLabel">Edit Kategori</h1>
                                                                     <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
                                                                 </div>
                                                                 <div class="modal-body">
                                                                     {{-- Display validation errors if there are any --}}
@@ -148,7 +183,7 @@
                                                                                 class="text-danger">*</span></span>
                                                                         <textarea
                                                                             class="block w-full mt-1 text-sm dark:border-gray-600 dark:bg-gray-700 focus:border-purple-400 focus:outline-none focus:shadow-outline-purple dark:text-gray-300 dark:focus:shadow-outline-gray form-input"
-                                                                            name="update-kategori"  autofocus>{{ $kategori->kategori }}</textarea>
+                                                                            name="update-kategori" autofocus>{{ $kategori->kategori }}</textarea>
                                                                     </label>
 
                                                                 </div>
@@ -183,8 +218,6 @@
                             @endif
                         </tbody>
                     </table>
-
-
                 </div>
                 {{-- Pagination --}}
                 <nav aria-label="Page navigation example">
@@ -198,4 +231,98 @@
             </div>
         </div>
     </main>
+
+    @yield('script')
+
+    <script>
+
+        $(document).ready(function() {
+
+            $('#select_all_ids').click(function() {
+                $('.checkbox_ids').prop('checked', $(this).prop('checked'));
+            });
+
+            $('#deleteAllSelected').click(function(e) {
+                e.preventDefault();
+                var all_ids = [];
+                $('input:checked[name="ids"]').each(function() {
+                    all_ids.push($(this).val());
+                });
+
+                if (all_ids.length === 0) {
+                    alert('Pilih setidaknya satu item untuk dihapus.');
+                    return;
+                }
+
+                if (all_ids.length >= 1) {
+                    Swal.fire({
+                        title: "Yakin ?",
+                        text: `Anda yakin ingin Menghapusnya?`,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Hapus',
+                        cancelButtonText: 'Batal',
+                        confirmButtonColor: '#ff0000',
+                        allowOutsideClick: false // Tidak izinkan menutup notifikasi dengan mengklik di luar
+                    }).then((result) => {
+                        if (result.isConfirmed == true) {
+                            $.ajax({
+                                url: "{{ route('bot.kategori.selected') }}",
+                                type: "DELETE",
+                                data: {
+                                    ids: all_ids,
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function(response) {
+                                    if (response.success) {
+                                        $.each(all_ids, function(index, value) {
+                                            $('#kategori_ids' + value).remove();
+                                        });
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'Berhasil',
+                                            text: response.message,
+                                            confirmButtonText: "OK",
+                                            confirmButtonColor: 'green',
+                                            showConfirmButton: true
+                                        }).then((result) => {
+                                            if (result.isConfirmed) {
+                                                reloadData(
+                                                    `{{ route('bot.kategori') }}`
+                                                );
+                                            }
+                                        });
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'Gagal',
+                                            text: response.message
+                                        });
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error(error); // Cetak kesalahan ke konsol
+                                }
+                            });
+                        } else {
+                            Swal.fire({
+                                text: "{{ $teks }} Batal Dihapus",
+                                confirmButtonText: "OK",
+                                confirmButtonColor: "rgba(0,0,0,.5)",
+                            })
+                        }
+                    });
+                }
+
+
+            });
+        });
+
+        function reloadData(url) {
+            window.location.href = url;
+        }
+
+        // In your Javascript (external .js resource or <script> tag)
+    </script>
+
 @endsection

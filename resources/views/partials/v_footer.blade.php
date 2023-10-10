@@ -2,10 +2,12 @@
     integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
 </script>
 
-<script>
+
+
+<script type="text/javascript">
     //  ============ Tambah Kolom Action Start ============
 
-    const alertPlaceholder = document.getElementById('tambahKolomKategori');
+    const alertPlaceholder = document.getElementById('tambahKolom');
 
     let inputCounter = 0;
 
@@ -110,6 +112,13 @@
         @error('pesan')
             tampilkanModalValidasiError("modalEdit{{ $grup->id }}");
         @enderror
+        @error('apikey')
+            tampilkanModalValidasiError('modalBot');
+        @enderror
+        @error('apikey-update')
+            tampilkanModalValidasiError('modalEdit{{ $bot->id }}');
+        @enderror
+     
 
         function tampilkanModalValidasiError(modalId) {
             var modal = new bootstrap.Modal(document.getElementById(modalId));
@@ -119,10 +128,13 @@
 
     });
 
+    
+
 
     const successMessage = '{{ session('success_message') }}';
     const failedMessage = '{{ session('failed_message') }}';
     const warningMessage = '{{ session('warning_message') }}';
+    const infoMessage = '{{ session('info_message') }}';
     const title = '{{ session('title') }}';
 
     if (successMessage) {
@@ -149,11 +161,20 @@
         });
     }
 
-    if(warningMessage){
+    if (warningMessage) {
         Swal.fire({
             title: title,
             text: warningMessage,
             icon: 'warning',
+            confirmButtonText: "OK",
+            showConfirmButton: true
+        });
+    }
+    if (infoMessage) {
+        Swal.fire({
+            title: title,
+            text: infoMessage,
+            icon: 'info',
             confirmButtonText: "OK",
             showConfirmButton: true
         });
