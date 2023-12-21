@@ -81,21 +81,21 @@ class KategoriController extends Controller
 
     public function deleteAll(Request $request)
     {
-        $ids = $request->ids;
-        $status = Kategori::whereIn('id', $ids)->delete();
+            $ids = $request->ids;
+            $status = Kategori::whereIn('id', $ids)->delete();
 
-        if (!$status) {
-            return response()->json([
-                'error' => 'true',
-                'message' => "Kategori Gagal Dihapus"
-            ]);
-        }
+            if (!$status) {
+                return response()->json([
+                    'error' => 'true',
+                    'message' => "Kategori Gagal Dihapus"
+                ]);
+            }
 
-        return response()->json(
-            [
-                'success' =>  true,
-                'message' => "Kategori Berhasil Dihapus"
-            ]
-        );
+            return response()->json(
+                [
+                    'success' =>  true,
+                    'message' => "Kategori Berhasil Dihapus"
+                ]
+            );
     }
 }

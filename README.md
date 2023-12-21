@@ -1,30 +1,73 @@
 # Aplikasi Web Bot Telegram dengan Laravel
 
-![Logo Aplikasi](link_ke_logo.png)
+<!-- ![Logo Aplikasi](link_ke_logo.png) -->
 
 Proyek ini adalah implementasi sebuah aplikasi web bot yang berintegrasi dengan platform Telegram, dibangun menggunakan framework Laravel. Aplikasi ini dirancang untuk memberikan pengguna kemampuan untuk berinteraksi dengan bot melalui platform Telegram, sehingga memungkinkan mereka untuk melakukan berbagai tugas dan mendapatkan informasi dengan mudah melalui obrolan.
 
-## Fitur Utama
+Pastikan Anda telah menginstal:
 
-- **Integrasi Telegram:** Aplikasi ini memanfaatkan API Telegram untuk menghubungkan pengguna dengan bot melalui obrolan Telegram. Pengguna dapat memulai obrolan dengan bot dan mengakses layanan yang disediakan.
-- **Responsif dan User-Friendly:** Antarmuka aplikasi dirancang responsif dan ramah pengguna, memastikan pengalaman yang baik baik bagi pengguna desktop maupun perangkat mobile.
-- **Manajemen Tugas:** Bot ini dapat menjalankan berbagai tugas, seperti memberikan informasi terkini, mengingatkan acara, mengelola daftar tugas, dan lain-lain.
-- **Notifikasi:** Pengguna dapat menerima notifikasi dari bot, seperti pengingat kegiatan atau pemberitahuan penting melalui pesan Telegram.
-- **Interaksi yang Dipersonalisasi:** Bot dapat memberikan respon yang dipersonalisasi berdasarkan input pengguna, sehingga memberikan pengalaman yang lebih relevan.
-- **Keamanan:** Aplikasi ini memprioritaskan keamanan dengan mengimplementasikan otentikasi pengguna dan validasi input untuk mencegah serangan yang mungkin terjadi.
-- **Manajemen Pengguna:** Aplikasi menyediakan panel administrasi yang memungkinkan admin untuk mengelola pengguna, mengakses riwayat obrolan, dan melihat statistik penggunaan bot.
-- **Pengembangan Lebih Lanjut:** Kode sumber proyek ini dapat digunakan sebagai dasar untuk pengembangan lebih lanjut, dengan penambahan fitur-fitur baru sesuai kebutuhan.
+-   PHP (^8.1)
+-   Composer
+-   MySQL
+
+## Setup & Konfigirasi
+
+1. Clone repositori ini ke direktori lokal Anda:
+
+    ```bash
+    git clone https://github.com/andirhn/Aplikasi-Web-Bot-Telegram-Dengan-Laravel.git
+    ```
+
+2. Masuk ke direktori proyek:
+
+    ```bash
+    cd Aplikasi-Web-Bot-Telegram-Dengan-Laravel
+    ```
+
+3. Instal dependencies menggunakan Composer:
+
+    ```bash
+    composer install
+    ```
+
+4. Salin file `.env.example` menjadi `.env`:
+
+    ```bash
+    cp .env.example .env
+    ```
+
+5. Konfigurasi file `.env` dengan informasi database Anda.
+
+6. Generate key aplikasi Laravel:
+
+    ```bash
+    php artisan key:generate
+    ```
+
+7. Jalankan migrasi database untuk membuat skema tabel beserta seeder:
+
+    ```bash
+    php artisan migrate --seed
+    ```
+
+8. Jalankan server lokal untuk proyek:
+
+    ```bash
+    php artisan serve
+    ```
+
+    Proyek sekarang dapat diakses di `http://localhost:8000`.
 
 ## Teknologi yang Digunakan
 
-- **Laravel:** Framework PHP yang kuat dan intuitif, digunakan untuk mengembangkan backend aplikasi dan menyediakan routing, autentikasi, dan interaksi dengan database.
-- **Telegram Bot API:** Digunakan untuk menghubungkan aplikasi dengan platform Telegram, memungkinkan bot berinteraksi dengan pengguna melalui obrolan.
-- **Bootstrap atau Framework CSS lainnya:** Digunakan untuk merancang tata letak responsif dan menarik untuk antarmuka pengguna.
-- **Database (MySQL):** Untuk menyimpan data pengguna, riwayat obrolan, dan informasi lainnya.
+-   **Laravel:** Framework PHP yang kuat dan intuitif, digunakan untuk mengembangkan backend aplikasi dan menyediakan routing, autentikasi, dan interaksi dengan database.
+-   **Telegram Bot API:** Digunakan untuk menghubungkan aplikasi dengan platform Telegram, memungkinkan bot berinteraksi dengan pengguna melalui obrolan.
+-   **Bootstrap Dan Tailwind CSS:** Digunakan untuk merancang tata letak responsif dan menarik untuk antarmuka pengguna.
+-   **Database (MySQL):** Untuk menyimpan data pengguna, riwayat obrolan, dan informasi lainnya.
 
 ## Cara Berkontribusi
 
-Kami sangat menyambut kontribusi dari komunitas. Jika Anda ingin berkontribusi, Anda dapat membantu dengan memperbaiki bug, menambahkan fitur baru, atau meningkatkan dokumentasi. Silakan lihat [Panduan Kontribusi](link_ke_panduan_kontribusi.md) untuk informasi lebih lanjut.
+Kami sangat menyambut kontribusi dari komunitas. Jika Anda ingin berkontribusi, Anda dapat membantu dengan memperbaiki bug, menambahkan fitur baru, atau meningkatkan dokumentasi.
 
 ## Catatan
 

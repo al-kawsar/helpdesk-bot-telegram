@@ -43,7 +43,7 @@ class LoginController extends Controller
             // Autentikasi berhasil
             Auth::login($user);
             $request->session()->regenerate();
-            $url = '/admin/' . $user->id . "/profile";
+            $url = '/admin/' . $user->email . "/profile";
             if (!$user->password_changed) {
                 session()->flash('info_message','Anda wajib mengganti password!');
                 session()->flash('title','Infromasi');
@@ -51,7 +51,11 @@ class LoginController extends Controller
                     'password' => 'Anda wajib mengganti password', 
                     ])->withInput();
             }
-            return redirect()->intended("/admin/dashboard");
+            return redirect()->intended("/admin/dashboard")->with([
+                'toastr' => true,
+                'success' => true,
+                'message' => 'Berhasil Login'
+            ]);
         }
 
         return redirect()->back()->with('failed_message', 'Username dan password salah!');
@@ -65,6 +69,9 @@ class LoginController extends Controller
         Auth::logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();
-        return redirect()->route('login')->with('success_message', 'anda berhasil logout');
+        return redirect()->route('login')->with([
+            'title' => 'Anda Berhasil Logout',
+            'success_message' => '...'
+        ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PertanyaanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RequestPertanyaan;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\SubKategoriController;
 use App\Http\Controllers\SubSubKategoriController;
@@ -31,20 +32,22 @@ Route::get('/', [DashboardController::class, 'pageIndex']);
 Route::get('/login', [LoginController::class, 'login'])->name('login')->middleware('isAdminLogin');
 Route::post('/login', [LoginController::class, 'authenticate'])->name('auth.login');
 
+Route::post('/', [DashboardController::class, 'pertanyaan'])->name('post.question');
+Route::post('/check-token', [DashboardController::class, 'checkToken'])->name('post.check-token');
 
 Route::prefix('admin')->group(function () {
     // Route::redirect('{user:email}','/admin/dashboard/');
 
     Route::get('logout', [LoginController::class, 'logout'])->name('auth.logout');
 
-    Route::get('{user:id}/profile', [AdminBotController::class, 'profilePage'])->name('bot.email');
+    Route::get('{user:email}/profile', [AdminBotController::class, 'profilePage'])->name('bot.email');
     Route::put('{user:id}/profile', [ProfileController::class, 'updateProfile']);
 
 
     Route::middleware('auth.login')->group(function () {
 
         Route::post('bot', [TelegramBotController::class, 'botAction'])->name('bot.grup.sendmessage');
-        Route::redirect('bot','/admin/grup');
+        Route::redirect('bot', '/admin/grup');
 
         Route::get('dashboard', [AdminBotController::class, 'dashboard'])->name('bot.dashboard');
         Route::get('kategori', [AdminBotController::class, 'kategori'])->name('bot.kategori');
@@ -70,9 +73,12 @@ Route::prefix('admin')->group(function () {
         Route::get('hapus-sub-sub-kategori/{subsubkategori:id}', [SubSubKategoriController::class, 'delete']);
 
         Route::post('pertanyaan', [PertanyaanController::class, 'store']);
-        Route::post('edit-pertanyaan/{pertanyaan:pertanyaan}', [PertanyaanController::class, 'update']);
+        Route::post('edit-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'update']);
         Route::get('hapus-pertanyaan/{pertanyaan:id}', [PertanyaanController::class, 'delete']);
 
+        Route::get('request-pertanyaan', [RequestPertanyaan::class, 'index'])->name('bot.request');
+        Route::post('verifikasi-pertanyaan',[RequestPertanyaan::class,'verifikasiPertanyaan'])->name('bot.verifikasi.diterima');
+        Route::post('tolak-pertanyaan',[RequestPertanyaan::class,'tolakPertanyaan'])->name('bot.verifikasi.ditolak');
 
         Route::middleware(['auth', 'superadmin'])->group(function () {
 

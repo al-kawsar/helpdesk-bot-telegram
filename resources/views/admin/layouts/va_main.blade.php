@@ -1,6 +1,7 @@
 @auth
     @include('partials.v_head')
 
+    <div class="loading">Loading&#8230;</div>
     <div class="flex h-screen bg-gray-50 dark:bg-gray-900" :class="{ 'overflow-hidden': isSideMenuOpen }">
 
         @include('admin.partials.va_sidebar')

@@ -33,12 +33,10 @@ class TelegramBotController extends Controller
             'pesan.required' => 'Pesan wajib diisi.'
         ]);
 
-        Queue::push(new SendMessageQueue($grup, $pesan));
-
-        return redirect()->route('bot.grup')->with([
-            'success_message' => "Pesan Sedang Dikirim!",
-            'title' => "Berhasil"
-        ]);
+        // return redirect()->route('bot.grup')->with([
+        //     'success_message' => "Pesan Sedang Dikirim!",
+        //     'title' => "Berhasil"
+        // ]);
     }
 
 

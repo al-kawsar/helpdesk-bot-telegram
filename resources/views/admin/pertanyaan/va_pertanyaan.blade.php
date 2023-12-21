@@ -98,6 +98,7 @@
                                 <th class="px-4 py-3">#</th>
                                 <th class="px-4 py-3">Pertanyaan</th>
                                 <th class="px-4 py-3">Jawaban</th>
+                                <th class="px-4 py-3">Sub Sub Kategori</th>
                                 <th class="px-4 py-3">Tanggal Ditambahkan</th>
                                 <th class="px-4 py-3">Aksi</th>
                             </tr>
@@ -128,6 +129,9 @@
                                             {{ Str::limit($pertanyaan->jawaban, $limit, '...') }}
                                         </td>
                                         <td class="px-4 py-3 text-sm">
+                                            {{ $pertanyaan->subSubKategori->sub_sub_kategori }}
+                                        </td>
+                                        <td class="px-4 py-3 text-sm">
                                             {{ $pertanyaan->created_at->format('d M Y') }}
                                         </td>
                                         <td class="px-4 py-3">
@@ -149,7 +153,7 @@
                                                 <div class="modal fade" id="modalEdit{{ $pertanyaan->id }}" tabindex="-1"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog">
-                                                        <form action="/admin/edit-pertanyaan/{{ $pertanyaan->pertanyaan }}"
+                                                        <form action="/admin/edit-pertanyaan/{{ $pertanyaan->id }}"
                                                             method="post">
                                                             @csrf
                                                             <div class="modal-content">

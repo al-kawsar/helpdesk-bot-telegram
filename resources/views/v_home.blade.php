@@ -80,6 +80,27 @@
                 padding-left: 0;
             }
         }
+
+        .form-token {
+            display: block;
+            width: 100%;
+            height: 100%;
+            padding: 1rem;
+            color: black;
+            font-size: 1.5rem;
+            transition: all .3s cubic-bezier(0.47, 0, 0.745, 0.715);
+        }
+
+        .form-token:focus {
+            outline: none;
+            box-shadow: 0 0 0 1px #e8e8e8;
+        }
+
+        *,
+        html,
+        body {
+            scroll-behavior: smooth;
+        }
     </style>
 </head>
 
@@ -100,7 +121,7 @@
                 </div>
                 <div class="collapse navbar-collapse" id="custom-collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#totop">Beranda</a></li>
+                        <li><a href="#">Beranda</a></li>
                         <li><a class="section-scroll" href="#services">Layanan</a></li>
                         <li><a class="section-scroll" href="#alt-features">Fitur</a></li>
                         @if (!auth()->check())
@@ -173,20 +194,23 @@
                 </div>
             </section>
             <section class="module-small bg-dark">
-                <div class="container">
-                    <div class="row">
+                <form class="container" id="form_cek_status">
+                    <center>
+                        <h1 class="p-0 m-0">Cek Status Pertanyaan</h1>
+                        <h5 class="p-0 ">Silahkan input token untuk melihat status pengajuan pertanyaan</h5>
+                    </center>
+                    <div class="row" style="margin-top: 2rem; display: block;">
                         <div class="col-sm-6 col-md-8 col-lg-6 col-lg-offset-2">
-                            <div class="callout-text font-alt">
-                                <h3 class="callout-title">Ingin melihat lebih banyak hasil karya?</h3>
-                                <p>Kami selalu terbuka untuk proyek-proyek menarik.</p>
-                            </div>
+                            @csrf
+                            <input type="text" name="token" class="form-token">
                         </div>
                         <div class="col-sm-6 col-md-4 col-lg-2">
-                            <div class="callout-btn-box"><a class="btn btn-w btn-round" href="">Lets view</a>
+                            <div class="callout-btn-box"><button type="submit" class="btn btn-w btn-round">Cek
+                                    Status</button>
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
             </section>
             <section class="module" id="alt-features">
                 <div class="container">
@@ -271,24 +295,36 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3">
-                            <form role="form" method="post" action="/userQuestion">
+                            <form method="post" id="postQuestion">
+                                @csrf
                                 <div class="form-group">
                                     <label class="sr-only" for="name">Nama</label>
-                                    <input class="form-control" type="text" name="name"
-                                        placeholder="Masukkan nama anda*" required="required"
+                                    <input class="form-control" type="text" id="nama" name="nama"
+                                        placeholder="Nama anda*" required="required" style="text-transform: inherit;"
                                         data-validation-required-message="Masukkan nama anda." />
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="form-group">
-                                    <textarea class="form-control" rows="7" name="message" placeholder="Pertanyaan anda." required="required"
+                                    <label class="sr-only" for="name">Username bot telegram</label>
+                                    <input class="form-control" id="username" style="text-transform: inherit"
+                                        type="text" name="username" placeholder="Username bot telegram anda*"
+                                        required="required" data-validation-required-message="Masukkan nama anda." />
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <p class="help-block text-danger"></p>
+                                </div>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="pertanyaan" style="text-transform: inherit" cols="1" rows="7"
+                                        name="pertanyaan" placeholder="Pertanyaan anda." required="required"
                                         data-validation-required-message="Please enter your message."></textarea>
                                     <p class="help-block text-danger"></p>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-block btn-round btn-d" type="submit">Submit</button>
+                                    <button class="btn btn-block btn-round btn-d" id="addQuestion"
+                                        type="submit">Submit</button>
                                 </div>
                             </form>
-                            <div class="ajax-response font-alt" id="contactFormResponse"></div>
                         </div>
                     </div>
                 </div>
@@ -298,7 +334,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-12">
-                            <p class="copyright font-alt">&copy; 2023&nbsp;<a href="/">Bot Helpdesk</a>, All
+                            <p class="copyright font-alt">&copy; 2023&nbsp;ICT Center, All
                                 Rights
                                 Reserved</p>
                         </div>
@@ -315,6 +351,153 @@ JavaScripts
 -->
     <script src="dashboard/assets/lib/jquery/dist/jquery.js"></script>
     <script src="dashboard/assets/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $(window).on('load', function() {
+            $('#loading').hide();
+        })
+
+        $('#form_cek_status button[type="submit"]').prop('disabled', true);
+
+        $('input[name="token"]').on('input', function() {
+            var tokenValue = $(this).val().trim();
+
+            // Mengubah status tombol submit berdasarkan nilai token
+            if (tokenValue === '') {
+                $('#form_cek_status button[type="submit"]').prop('disabled', true);
+            } else {
+                $('#form_cek_status button[type="submit"]').prop('disabled', false);
+            }
+        });
+
+        $("#form_cek_status").submit((e) => {
+            e.preventDefault()
+
+            // Mengambil nilai dari input dengan name="token"
+            let tokenValue = $('[name="token"]').val();
+            $('#form_cek_status button[type="submit').text('Load...');
+            $('#form_cek_status button[type="submit"]').prop('disabled', true);
+
+            $.ajax({
+                url: "{{ route('post.check-token') }}",
+                type: 'POST',
+                data: $('#form_cek_status').serialize(),
+                success: (response) => {
+                    if (response.success) {
+                        swal({
+                            icon: 'info',
+                            title: response.message.title,
+                            text: response.message.text,
+                            button: "Tutup",
+                        })
+                    } else {
+                        swal({
+                            icon: 'error',
+                            title: response.message.title,
+                            text: response.message.text,
+                            button: "Tutup",
+                        })
+                    }
+                    $('#form_cek_status button[type="submit').text('CEK STATUS');
+                    $('#form_cek_status button[type="submit"]').prop('disabled', false);
+
+                },
+                error: (error) => {
+                    if (error.status == 500) {
+                        swal({
+                            icon: "error",
+                            title: "Internal Server Error",
+                            text: "Maaf, terjadi kesalahan internal pada server kami. Tim teknis kami sudah mendapatkan notifikasi tentang masalah ini dan akan segera mencari solusi.Sementara itu, Anda dapat mencoba melakukan refresh halaman atau kembali ke halaman sebelumnya.Terima kasih atas pengertian dan kesabarannya."
+                        });
+                    } else {
+                        swal({
+                            icon: "error",
+                            title: error,
+                            text: error
+                        });
+                    }
+                    $('#form_cek_status button[type="submit').text('CEK STATUS');
+                    $('#form_cek_status button[type="submit"]').prop('disabled', false);
+
+                }
+            })
+
+        })
+
+        $("#postQuestion").submit(function(e) {
+            e.preventDefault(); // Menghentikan pengiriman form bawaan
+
+            $("#addQuestion").text('Load...');
+            $('#addQuestion').prop('disabled', true);
+
+
+            $.ajax({
+                url: "  {{ route('post.question') }}",
+                type: 'POST',
+                data: $('#postQuestion').serialize(),
+                success: (response) => {
+                    if (response.success) {
+                        swal({
+                            icon: "success",
+                            title: response.message.title,
+                            text: response.message.text,
+                            closeOnClickOutside: false
+
+                        }).then(() => {
+                            // Code to show another swal after clicking OK
+                            swal({
+                                icon: "info",
+                                title: "Informasi",
+                                text: `Anda Wajib Menyimpan token ini untuk mengecek status pertanyaan anda.
+
+                                ${response.token}`,
+                                closeOnClickOutside: false
+                            });
+                        });
+                        $("#addQuestion").text('Submit');
+                        $('#nama').val('');
+                        $('#username').val('');
+                        $('#pertanyaan').val('');
+                        $('#addQuestion').prop('disabled', false);
+
+                    } else {
+                        swal({
+                            icon: "error",
+                            title: response.message.title,
+                            text: response.message.text
+                        });
+                        $("#addQuestion").text('Submit');
+                        $('#addQuestion').prop('disabled', false);
+
+                    }
+                },
+                error: function(error) {
+                    if (error.status == 500) {
+                        swal({
+                            icon: "error",
+                            title: "Internal Server Error",
+                            text: "Maaf, terjadi kesalahan internal pada server kami. Tim teknis kami sudah mendapatkan notifikasi tentang masalah ini dan akan segera mencari solusi.Sementara itu, Anda dapat mencoba melakukan refresh halaman atau kembali ke halaman sebelumnya.Terima kasih atas pengertian dan kesabarannya."
+                        });
+                    } else {
+                        swal({
+                            icon: "error",
+                            title: error.message.title,
+                        });
+                    }
+                    $("#addQuestion").text('Submit');
+                    $('#addQuestion').prop('disabled', false);
+
+                }
+            })
+
+
+
+        });
+    </script>
+
 </body>
 
 </html>

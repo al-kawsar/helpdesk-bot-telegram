@@ -98,7 +98,7 @@ class AdminBotController extends Controller
     public function profilePage(User $user)
     {
         if ($user->id != auth()->user()->id) {
-            return redirect()->back()->with('warning_message', 'Anda tidak punya akses!');
+            return abort(404);
         }
         $title = 'Admin Profile ' . $user->name;
         $teks = '';

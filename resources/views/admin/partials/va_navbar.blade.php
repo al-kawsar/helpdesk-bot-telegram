@@ -29,10 +29,9 @@
                 </a>
             </form>
         @endif
-        <button class="d-flex gap-2 align-items-center shadow-md rounded px-2 ms-auto " type="button" data-bs-toggle="offcanvas"
+        <button class="d-flex gap-2 align-items-center  rounded px-2 ms-auto " type="button" data-bs-toggle="offcanvas"
             data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
             <i class="bi bi-person-circle fs-2"></i>
-            <p class="text-uppercase">{{ auth()->user()->name }}</p>
         </button>
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -51,7 +50,7 @@
             <ul>
                 <hr>
                 <li class="nav-items prof-h rounded px-3 py-1 my-1">
-                    <a href="/admin/{{ auth()->user()->id }}/profile" class="gap-2 nav-link d-flex align-items-center">
+                    <a href="/admin/{{ auth()->user()->email }}/profile" class="gap-2 nav-link d-flex align-items-center">
                         <div class="icon">
                             <i class="bi bi-person fs-5"></i>
                         </div> <span class="fs-6">Your Profile</span>

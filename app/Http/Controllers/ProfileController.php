@@ -33,7 +33,7 @@ class ProfileController extends Controller
         $status_pass = $user->password_changed;
         $ps = !$status_pass && $db_pass == $password_repl ? '0' : '1';
 
-        $url = "/admin/{$user->id}/profile";
+        $url = "/admin/{$user->email}/profile";
 
         if (!$status_pass && $ps === '0') {
             return redirect($url)->with([
@@ -53,7 +53,7 @@ class ProfileController extends Controller
         $user->password_changed = $ps;
         $user->save();
 
-        return redirect("/admin/{$user->id}/profile")->with([
+        return redirect($url)->with([
             'success_message' => "Profile Berhasil Diubah",
             'title' => 'Berhasil!'
         ]);

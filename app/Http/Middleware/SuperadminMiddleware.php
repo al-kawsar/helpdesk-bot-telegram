@@ -19,6 +19,6 @@ class SuperadminMiddleware
             return $next($request);
         }
         // Jika bukan superadmin, Anda bisa mengarahkan pengguna atau melakukan tindakan lainnya
-    return redirect()->back()->with('warning_message','Anda tidak punya akses');
+    return abort(404);
     }
 }
