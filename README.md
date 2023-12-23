@@ -65,12 +65,9 @@ Pastikan Anda telah menginstal:
 -   **Bootstrap Dan Tailwind CSS:** Digunakan untuk merancang tata letak responsif dan menarik untuk antarmuka pengguna.
 -   **Database (MySQL):** Untuk menyimpan data pengguna, riwayat obrolan, dan informasi lainnya.
 
-## Cara Berkontribusi
+## Kontribusi
+- Raihan Alkawsar
+- Kak Sahirul (Aril)
 
 Kami sangat menyambut kontribusi dari komunitas. Jika Anda ingin berkontribusi, Anda dapat membantu dengan memperbaiki bug, menambahkan fitur baru, atau meningkatkan dokumentasi.
-
-## Catatan
-
-Proyek ini dikembangkan dengan tujuan edukasional dan praktik terbaik dalam pengembangan perangkat lunak telah diterapkan. Namun, proyek ini mungkin masih memerlukan beberapa perbaikan dan pengembangan lebih lanjut.
-
 © 2023 - Ict Center
