@@ -93,6 +93,7 @@ Route::prefix('admin')->group(function () {
             Route::get('request-pertanyaan', 'index')->name('bot.request');
             Route::post('verifikasi-pertanyaan', 'verifikasiPertanyaan')->name('bot.verifikasi.diterima');
             Route::post('tolak-pertanyaan', 'tolakPertanyaan')->name('bot.verifikasi.ditolak');
+            Route::delete('hapus-semua-pertanyaan', 'hapusSemua')->name('request.delete-all');
         });
 
         Route::middleware(['superadmin'])->group(function () {

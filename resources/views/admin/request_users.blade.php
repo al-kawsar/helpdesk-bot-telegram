@@ -54,7 +54,7 @@
                                 </tr>
                             @else
                                 @foreach ($req_question as $number => $req)
-                                    <tr class="text-gray-700 dark:text-gray-400" id="kategori_ids{{ $req->id }}">
+                                    <tr class="text-gray-700 dark:text-gray-400" id="req-ids-{{ $req->id }}">
                                         <td class="px-3 py-3 text-center">
                                             <input type="checkbox" name="ids"
                                                 class="mycheck checkbox_ids form-check-input p-2" id=""
@@ -160,7 +160,7 @@
 
                         if (result.isConfirmed == true) {
                             $.ajax({
-                                url: "{{ route('bot.kategori.selected') }}",
+                                url: "{{ route('request.delete-all') }}",
                                 type: "DELETE",
                                 data: {
                                     ids: all_ids,
@@ -168,21 +168,24 @@
                                 },
                                 success: function(response) {
                                     $('.loading').fadeOut(500)
-                                    if (response.success) {
+
+                                    const {success, message: { title, text }} = response;
+
+                                    if (success) {
                                         $.each(all_ids, function(index, value) {
-                                            $('#kategori_ids' + value).remove();
+                                            $('#req-ids-' + value).remove();
                                         });
                                         Swal.fire({
                                             icon: 'success',
-                                            title: 'Berhasil',
-                                            text: response.message,
+                                            title: title,
+                                            text: text,
                                             confirmButtonText: "OK",
                                             confirmButtonColor: 'green',
                                             showConfirmButton: true
                                         }).then((result) => {
                                             if (result.isConfirmed) {
                                                 reloadData(
-                                                    `{{ route('bot.kategori') }}`
+                                                    `{{ route('bot.request') }}`
                                                 );
                                             }
                                             $('.loading').fadeOut(500)

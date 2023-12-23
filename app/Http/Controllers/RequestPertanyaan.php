@@ -48,4 +48,28 @@ class RequestPertanyaan extends Controller
     public function tolakPertanyaan(Request $request)
     {
     }
+
+    public function hapusSemua(Request $request)
+    {
+        try {
+
+            UserQuestion::destroy($request->ids);
+
+            return response()->json([
+                'success' => true,
+                'message' => [
+                    'title' => 'Berhasil',
+                    'text' => 'Request pertanyaan berhasil dihapus'
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => [
+                    'title' => 'Gagal',
+                    'text' => 'Request pertanyaan gagal dihapus'
+                ]
+            ]);
+        }
+    }
 }
