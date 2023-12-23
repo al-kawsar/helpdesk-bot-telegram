@@ -46,7 +46,7 @@ class DashboardController extends Controller
             $token = self::generateToken(model: $userQuestion);
 
             // check token ketika ada yang sama
-            $token = $userQuestion->where('token',$token)->first() ? self::generateToken(model: $userQuestion) : $token;
+            $token = $userQuestion->where('token', $token)->first() ? self::generateToken(model: $userQuestion) : $token;
 
             $userQuestion->create([
                 'nama' => request('nama'),
@@ -130,8 +130,9 @@ class DashboardController extends Controller
         }
     }
 
-    private function generateToken(Model $model){
+    private function generateToken(Model $model): string
+    {
         $Uniqkey = ($model->count() + 1) * 100;
-        return "BOT/ICT/{$Uniqkey}/" . random_int(0, ($Uniqkey * 100));
+        return "BOT/{$Uniqkey}/ICT/" . random_int(0, ($Uniqkey * 100));
     }
 }
