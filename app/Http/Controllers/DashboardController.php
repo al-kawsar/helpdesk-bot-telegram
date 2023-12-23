@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Pertanyaan;
 use App\Models\UserQuestion;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -40,15 +41,14 @@ class DashboardController extends Controller
         }
 
         try {
+            $userQuestion = new UserQuestion();
 
-            $length = 10;
-            $token = Str::random($length);
-            $checkToken = UserQuestion::where('token', $token)->first();
-            if ($checkToken) {
-                $token = Str::random($length++);
-            }
+            $token = self::generateToken(model: $userQuestion);
 
-            UserQuestion::create([
+            // check token ketika ada yang sama
+            $token = $userQuestion->where('token',$token)->first() ? self::generateToken(model: $userQuestion) : $token;
+
+            $userQuestion->create([
                 'nama' => request('nama'),
                 'username' => request('username'),
                 'pertanyaan' => request('pertanyaan'),
@@ -92,7 +92,7 @@ class DashboardController extends Controller
 
             $reqRespon = UserQuestion::where('token', $request->token)->first();
 
-            if(!$reqRespon){
+            if (!$reqRespon) {
                 return response()->json([
                     'error' => true,
                     'message' => [
@@ -108,7 +108,7 @@ class DashboardController extends Controller
                 $status = 'Diterima';
             } elseif ($status === '3') {
                 $status = 'Ditolak';
-            }else{
+            } else {
                 $status = "Status tidak diketahui";
             }
 
@@ -128,5 +128,10 @@ class DashboardController extends Controller
                 ],
             ]);
         }
+    }
+
+    private function generateToken(Model $model){
+        $Uniqkey = ($model->count() + 1) * 100;
+        return "BOT/ICT/{$Uniqkey}/" . random_int(0, ($Uniqkey * 100));
     }
 }
