@@ -13,12 +13,53 @@
                 Table {{ $teks }}
             </h2>
 
+
             @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
             @endif
 
+            <div class="position-fixed top-0 left-0 w-100 h-100" style="z-index: 99; background: rgba(0,0,0,.5)"
+                id="modalCustom">
+                <form class="position-absolute top-50 start-50 translate-middle p-3 rounded bg-white" style="width: 500px"
+                    id="modalBody">
+                    <header class="title">
+                        <h1 class="text-xl fw-bold pt-1">Verifikasi Pertanyaan</h1>
+                    </header>
+                    <section class="body pt-4 pb-3">
+                        <label for="ket" class="mb-2 fw-semibold">Keterangan:</label>
+                        <textarea name="keterangan" id="ket" class="form-control text-sm" rows="3"
+                            placeholder="berikan keterangan verifikasi pada user"></textarea>
+                    </section>
+                    <footer>
+                        <div class="d-flex text-white gap-2 justify-end">
+                            <button class="p-2 rounded bg-secondary btn-v" id="cancel">Cancel</button>
+                            <button class="p-2 rounded bg-primary btn-v" id="submit">Verifikasi</button>
+                        </div>
+                    </footer>
+                </form>
+            </div>
+            <div class="position-fixed top-0 left-0 w-100 h-100" style="z-index: 99; background: rgba(0,0,0,.5)"
+                id="modalCustomT">
+                <form class="position-absolute top-50 start-50 translate-middle p-3 rounded bg-white" style="width: 500px"
+                    id="modalBodyT">
+                    <header class="title">
+                        <h1 class="text-xl fw-bold pt-1">Verifikasi Pertanyaan</h1>
+                    </header>
+                    <section class="body pt-4 pb-3">
+                        <label for="ket" class="mb-2 fw-semibold">Keterangan:</label>
+                        <textarea name="keterangan" id="ket" class="form-control text-sm" rows="3"
+                            placeholder="berikan keterangan verifikasi pada user"></textarea>
+                    </section>
+                    <footer>
+                        <div class="d-flex text-white gap-2 justify-end">
+                            <button class="p-2 rounded bg-secondary btn-v" id="cancelT">Cancel</button>
+                            <button class="p-2 rounded bg-danger btn-v" id="submitT">Tolak</button>
+                        </div>
+                    </footer>
+                </form>
+            </div>
 
             <div class="d-flex my-2">
                 <button class="btn btn-danger me-auto" type="button" id="deleteAllSelected">Delete All Selected</button>
@@ -36,6 +77,7 @@
                                 <th class="px-3 py-3">Nama</th>
                                 <th class="px-3 py-3">Username Telegram</th>
                                 <th class="px-3 py-3">Pertanyaan</th>
+                                <th class="px-3 py-3">Status</th>
                                 <th class="px-3 py-3">Aksi</th>
                             </tr>
                         </thead>
@@ -75,6 +117,22 @@
                                                 {{ Str::length($req->pertanyaan) > 50 ? substr($req->pertanyaan, 0, 20) . '...' : $req->pertanyaan }}
                                             </button>
                                         </td>
+                                        <td class="px-4 py-3">
+                                            @php $r = $req->status; @endphp
+                                            @if ($r == 1)
+                                                <span class="bg-warning text-white rounded-md p-1 text-sm">
+                                                    Menunggu
+                                                </span>
+                                            @elseif($r == 2)
+                                                <span class="bg-success text-white rounded-md p-1 text-sm">
+                                                    Diterima
+                                                </span>
+                                            @else
+                                                <span class="bg-danger text-white rounded-md p-1 text-sm">
+                                                    Ditolak
+                                                </span>
+                                            @endif
+                                        </td>
 
                                         <td class="px-4 py-3">
                                             <div class="flex items-center space-x-4 text-sm">
@@ -83,8 +141,8 @@
                                                     class="btn-v btn-verifikasi flex items-center justify-between px-2 py-2 bg-blue-600 text-sm font-medium leading-5 text-white rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-white">
                                                     Verifikasi
                                                 </button>
-                                                <button type="button"
-                                                    class="btn-v flex items-center justify-between px-2 py-2 bg-red-600 text-sm font-medium leading-5 text-white rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-white">
+                                                <button type="button" data-tolak="{{ $req->id }}"
+                                                    class="btn-v flex btn-tolak items-center justify-between px-2 py-2 bg-red-600 text-sm font-medium leading-5 text-white rounded-lg dark:text-gray-400 focus:outline-none focus:shadow-outline-white">
                                                     Tolak
                                                 </button>
                                             </div>
@@ -169,7 +227,13 @@
                                 success: function(response) {
                                     $('.loading').fadeOut(500)
 
-                                    const {success, message: { title, text }} = response;
+                                    const {
+                                        success,
+                                        message: {
+                                            title,
+                                            text
+                                        }
+                                    } = response;
 
                                     if (success) {
                                         $.each(all_ids, function(index, value) {
@@ -228,65 +292,142 @@
 
             });
 
+            $('#modalCustom').fadeOut(0);
+            $('#modalCustom #modalBody').fadeOut(0);
+            $('#modalCustomT').fadeOut(0);
+            $('#modalCustomT #modalBodyT').fadeOut(0);
+
+            $('#modalCustom #cancel').click(function(e) {
+                e.preventDefault()
+                $('#modalCustom').fadeOut(150);
+            })
 
             $('.btn-verifikasi').click(function(e) {
                 e.preventDefault()
+                $('#modalCustom').fadeIn(0);
+                $('#modalCustom #modalBody').fadeIn(100);
+                $('#modalBody').data('id-verifikasi', $(this).data('verifikasi'));
+            })
 
-                Swal.fire({
-                    title: "Apakah anda ingin menambah keterangan?",
-                    icon: 'info',
-                    showCancelButton: true,
-                    cancelButtonText: 'Tidak usah',
-                    confirmButtonText: 'Ya, Saya ingin',
-                    allowOutsideClick: false
-                }).then(function(result) {
-                    $('.loading').fadeIn()
-                    var csrfToken = document.querySelector('meta[name="csrf"]').getAttribute(
-                        'content');
-                    let dataVerifikasi = $(this).data('verifikasi');
+            $('#modalBody').submit(function(e) {
+                e.preventDefault();
 
-                    if (result.isConfirmed) {
-                        $('.loading').fadeOut()
-                    } else {
-                        $.ajax({
-                            url: "{{ route('bot.verifikasi.diterima') }}",
-                            type: 'POST',
-                            data: {
-                                _token: csrfToken,
-                                id_verifikasi: dataVerifikasi
-                            },
-                            success: function(response) {
-                                $('.loading').fadeOut(500)
-                                Swal.fire({
 
-                                })
-                                if (response.success) {
-                                    Swal.fire({
-                                        'icon': 'success',
-                                        'title': response.message.title,
-                                        'text': response.message.text,
-                                    }).then(function() {
-                                        // location.reload()
-                                    })
-                                }
-                            },
-                            error: function(response) {
-                                console.log('error', response)
+                // $('#modalCustom #submit').prop('disabled', true)
+
+                const dataKeterangan = $('[name="keterangan"]').val()
+                const _token = document.querySelector('meta[name="csrf"]').getAttribute(
+                    'content');
+                const id_verifikasi = $(this).data('id-verifikasi');
+
+
+                $.ajax({
+                    url: "{{ route('bot.verifikasi.diterima') }}",
+                    type: 'POST',
+                    data: {
+                        _token,
+                        id_verifikasi,
+                        dataKeterangan
+                    },
+                    success: function(response) {
+                        $('#modalCustom').fadeOut(150);
+                        const {
+                            success,
+                            message: {
+                                title,
+                                text
                             }
-                        })
+                        } = response;
+
+                        if (success) {
+                            Swal.fire({
+                                'icon': 'success',
+                                'title': title,
+                                'text': text,
+                            }).then(() => {
+                                location.reload()
+                            })
+                        } else {
+                            Swal.fire({
+                                'icon': 'error',
+                                'title': title,
+                                'text': text,
+                            })
+                        }
+                    },
+                    error: (error) => {
+                        console.log(response);
                     }
                 })
 
             })
+
+            $('.btn-tolak').click(function(e) {
+                e.preventDefault()
+                $('#modalCustomT').fadeIn(0);
+                $('#modalCustomT #modalBodyT').fadeIn(100);
+                $('#modalBodyT').data('id-tolak', $(this).data('tolak'));
+            })
+
+            $('#modalBodyT').submit(function(e) {
+                e.preventDefault();
+
+
+                // $('#modalCustom #submit').prop('disabled', true)
+
+                const dataKeterangan = $('[name="keterangan"]').val()
+                const _token = document.querySelector('meta[name="csrf"]').getAttribute(
+                    'content');
+                const id_verifikasi = $(this).data('id-tolak');
+
+
+                $.ajax({
+                    url: "{{ route('bot.verifikasi.ditolak') }}",
+                    type: 'POST',
+                    data: {
+                        _token,
+                        id_verifikasi,
+                        dataKeterangan
+                    },
+                    success: function(response) {
+                        $('#modalCustomT').fadeOut(150);
+                        const {
+                            success,
+                            message: {
+                                title,
+                                text
+                            }
+                        } = response;
+
+                        if (success) {
+                            Swal.fire({
+                                'icon': 'success',
+                                'title': title,
+                                'text': text,
+                            }).then(() => {
+                                location.reload()
+                            })
+                        } else {
+                            Swal.fire({
+                                'icon': 'error',
+                                'title': title,
+                                'text': text,
+                            })
+                        }
+                    },
+                    error: (error) => {
+                        console.log(response);
+                    }
+                })
+
+            })
+
 
         });
 
         function reloadData(url) {
             window.location.href = url;
         }
-
-
-        // In your Javascript (external .js resource or <script> tag)
     </script>
 
 @endsection

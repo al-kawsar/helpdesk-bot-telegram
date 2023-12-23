@@ -47,11 +47,13 @@ class DashboardController extends Controller
 
             // check token ketika ada yang sama
             $token = $userQuestion->where('token', $token)->first() ? self::generateToken(model: $userQuestion) : $token;
+            $text = "Tim kami sedang melakukan proses verifikasi terhadap pengajuan yang Anda berikan. Proses ini dapat memerlukan beberapa waktu";
 
             $userQuestion->create([
                 'nama' => request('nama'),
                 'username' => request('username'),
                 'pertanyaan' => request('pertanyaan'),
+                'response' => $text,
                 'token' => $token
             ]);
 
@@ -102,6 +104,7 @@ class DashboardController extends Controller
             }
 
             $status = $reqRespon->status;
+            $text = $reqRespon->response;
             if ($status === '1') {
                 $status = 'Menunggu';
             } elseif ($status === '2') {
@@ -116,7 +119,7 @@ class DashboardController extends Controller
                 'success' => true,
                 'message' => [
                     'title' => "Status : {$status}",
-                    'text' => "ini respon"
+                    'text' => $text ?? 'ini respon'
                 ],
             ], 200);
         } catch (\Exception $e) {
@@ -132,7 +135,7 @@ class DashboardController extends Controller
 
     private function generateToken(Model $model): string
     {
-        $Uniqkey = ($model->count() + 1) * 100;
-        return "BOT/{$Uniqkey}/ICT/" . random_int(0, ($Uniqkey * 100));
+        $Uniqkey = ($model->count() + 1) * 123;
+        return "BOT/{$Uniqkey}/ICT/" . random_int(0, ($Uniqkey * 671));
     }
 }
