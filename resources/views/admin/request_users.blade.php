@@ -301,6 +301,10 @@
                 e.preventDefault()
                 $('#modalCustom').fadeOut(150);
             })
+            $('#modalCustomT #cancelT').click(function(e) {
+                e.preventDefault()
+                $('#modalCustomT').fadeOut(150);
+            })
 
             $('.btn-verifikasi').click(function(e) {
                 e.preventDefault()
