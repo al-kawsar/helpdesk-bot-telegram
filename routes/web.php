@@ -34,7 +34,6 @@ Route::controller(LoginController::class)->group(function () {
 });
 
 Route::controller(DashboardController::class)->group(function () {
-
     // Dashboard Admin Page
     Route::get('/', 'pageIndex');
 
@@ -44,19 +43,21 @@ Route::controller(DashboardController::class)->group(function () {
 
 Route::prefix('admin')->group(function () {
 
-    Route::put('{user:id}/profile', [ProfileController::class, 'updateProfile']);
+    Route::put('profile', [ProfileController::class, 'updateProfile']);
 
     Route::middleware('auth.login')->group(function () {
 
-        Route::post('bot', [TelegramBotController::class, 'botAction'])->name('bot.grup.sendmessage');
-        Route::post('/webhook', [TelegramBotController::class, 'handleBot'])->withoutMiddleware('auth.login');
+        Route::controller(TelegramBotController::class)->group(function () {
+            Route::post('bot', 'botAction')->name('bot.grup.sendmessage');
+            Route::get('/webhook', 'handleBot')->withoutMiddleware('auth.login');
+        });
         Route::redirect('bot', '/admin/grup');
 
         Route::controller(AdminBotController::class)->name('bot.')->group(function () {
             Route::get('dashboard', 'dashboard')->name('dashboard');
             Route::get('kategori', 'kategori')->name('kategori');
             Route::get('users', 'user')->name('user');
-            Route::get('{user:email}/profile', 'profilePage')->withoutMiddleware('auth.login')->name('email');
+            Route::get('profile', 'profilePage')->name('email');
             Route::get('grup', 'grup')->name('grup');
             Route::get('sub-kategori', 'subKategori')->name('sub-kategori');
             Route::get('sub-sub-kategori', 'subSubKategori')->name('sub-sub-kategori');

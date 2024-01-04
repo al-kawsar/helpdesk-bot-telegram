@@ -15,7 +15,7 @@
         @enderror
 
         <hr class="my-3">
-        <form action="/admin/{{ $user->id }}/profile" method="post" class="">
+        <form action="/admin/profile" method="post" class="">
             @csrf
             @method('PUT')
             <div class="mb-3">

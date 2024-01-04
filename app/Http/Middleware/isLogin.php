@@ -19,7 +19,7 @@ class isLogin
         if (Auth::check() && auth()->user()->password_changed) {
             return $next($request);
         } elseif (Auth::check() && !auth()->user()->password_changed) {
-            return redirect("/admin/" . auth()->user()->email . "/profile")->with(
+            return redirect("/admin/profile")->with(
                 [
                     'warning_message'=> 'Anda Wajib Mengganti Password!',
                     'title' => 'Peringatan',

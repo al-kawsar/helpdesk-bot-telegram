@@ -8,18 +8,16 @@ use Illuminate\Support\Facades\Crypt;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function updateProfile(Request $request, User $user)
+
+    public function updateProfile(Request $request)
     {
         $credentials = $request->validate([
             'name' => 'required|max:255',
-            'email' => $request->email == $user->email ? 'required|max:255|email' : 'unique:users|max:255|required|email',
+            'email' => 'max:255|required|email|unique:users,email,' . auth()->id(),
             'password' => ['required'],
         ], [
             'name.required' => "Nama wajib di isi",
-            'email.unique' => 'Email sudah digunaka, coba yang lain!',
+            'email.unique' => 'Email sudah digunakan, coba yang lain!',
             'email.required' => 'Email wajib diisi!',
             'email.email' => 'Silakan masukkan email yang valid!',
             'password.required' => 'Password wajib diisi!',
@@ -27,6 +25,8 @@ class ProfileController extends Controller
 
         $password = $request->get('password');
         $password_repl = preg_replace('/\s+/', '', $password);
+
+        $user = auth()->user();
 
         $db_pass = Crypt::decrypt($user->password);
         $db_pass = explode('.', $db_pass)[1];
@@ -52,6 +52,8 @@ class ProfileController extends Controller
         $user->password = Crypt::encrypt($password);
         $user->password_changed = $ps;
         $user->save();
+
+        $url = "/admin/profile";
 
         return redirect($url)->with([
             'success_message' => "Profile Berhasil Diubah",

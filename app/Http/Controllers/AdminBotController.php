@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
 use App\Models\Bot;
 use App\Models\Group;
 use App\Models\Kategori;
@@ -11,10 +10,6 @@ use App\Models\SubKategori;
 use App\Models\SubSubKategori;
 use App\Models\TelegramUser;
 use App\Models\User;
-use App\Models\Webhook;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cache;
-
 class AdminBotController extends Controller
 {
     public function dashboard()
@@ -66,14 +61,6 @@ class AdminBotController extends Controller
         ]);
     }
 
-    // public function inbox()
-    // {
-    //     return view('admin.va_inbox', [
-    //         'title' => "Admin Inbox",
-    //         'teks' => "Inbox",
-    //     ]);
-    // }
-
     public function kategori()
     {
         $query = request()->input('search'); // Ambil query pencarian dari request
@@ -95,11 +82,9 @@ class AdminBotController extends Controller
         ]);
     }
 
-    public function profilePage(User $user)
+    public function profilePage()
     {
-        if ($user->id != auth()->user()->id) {
-            return abort(404);
-        }
+        $user = auth()->user();
         $title = 'Admin Profile ' . $user->name;
         $teks = '';
         return view('admin.va_profile-admin', compact('title', 'teks', 'user'));

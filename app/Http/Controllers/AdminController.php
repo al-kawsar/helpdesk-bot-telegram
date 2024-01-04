@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -53,7 +54,7 @@ class AdminController extends Controller
         $credential = Validator::make(
             $request->all(),
             [
-                'email' => $request->email == $user->email ? 'required|max:255|email|email:rfc,dns' : 'unique:users|max:255|required|email|email:rfc,dns',
+                'email' => 'max:255|required|email|email:rfc,dns|unique:users,email,' . $user->id,
                 'name' => 'required|max:255'
             ],
             [

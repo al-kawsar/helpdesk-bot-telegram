@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('bots', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->text('apikey')->unique()->nullable(false);
+            $table->string('apikey')->unique()->nullable(false);
             $table->string('id_bot')->unique()->nullable(false);
             $table->string('username')->unique()->nullable(false);
             $table->string('first_name')->nullable(false);
