@@ -50,7 +50,7 @@
             <ul>
                 <hr>
                 <li class="nav-items prof-h rounded px-3 py-1 my-1">
-                    <a href="/admin/{{ auth()->user()->email }}/profile" class="gap-2 nav-link d-flex align-items-center">
+                    <a href="/admin/profile" class="gap-2 nav-link d-flex align-items-center">
                         <div class="icon">
                             <i class="bi bi-person fs-5"></i>
                         </div> <span class="fs-6">Your Profile</span>
