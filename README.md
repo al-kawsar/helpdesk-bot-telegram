@@ -1,6 +1,6 @@
 # Helpdesk Bot Telegram
 
-<!-- ![Logo Aplikasi](link_ke_logo.png) -->
+<!-- ![Logo Aplikasi](link_ke_logo.png) s-->
 
 Proyek ini adalah implementasi sebuah aplikasi web bot yang berintegrasi dengan platform Telegram, dibangun menggunakan framework Laravel. Web ini dirancang untuk memberikan pengguna kemampuan untuk berinteraksi dengan bot melalui platform Telegram, sehingga memungkinkan mereka untuk melakukan berbagai tugas dan mendapatkan informasi dengan mudah melalui obrolan.
 
